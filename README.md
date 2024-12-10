@@ -177,8 +177,8 @@ structure:
 
 ## Dates
 
-The last day to create the pull request is **Monday, January 13, 2025**
-The feedback date is **Monday, January 20, 2025**
+- The last day to create the pull request is **Monday, January 13, 2025**
+- The feedback date is **Monday, January 20, 2025**
 
 ## Method of evaluation
 
