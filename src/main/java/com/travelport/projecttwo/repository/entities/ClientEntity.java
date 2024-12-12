@@ -3,6 +3,9 @@ package com.travelport.projecttwo.repository.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
@@ -11,8 +14,17 @@ import java.util.Objects;
 public class ClientEntity {
 
     @Id
+    @NotNull
+    @NotBlank
+    @Length(min = 9, max = 10)
     private String nif;
+
+    @NotNull
+    @NotBlank
+    @Length(min = 2, max = 150)
     private String name;
+
+    @Length(min = 5, max = 150)
     private String address;
 
     public String getName() {
