@@ -1,6 +1,7 @@
 package com.travelport.projecttwo.controllers;
 
 import com.travelport.projecttwo.controllers.dtos.ClientResponseDto;
+import com.travelport.projecttwo.controllers.mappings.ClientMappings;
 import com.travelport.projecttwo.repository.entities.ClientEntity;
 import com.travelport.projecttwo.services.IClientService;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;
@@ -23,18 +24,9 @@ public class ClientController {
     @GetMapping
     public List<ClientResponseDto> getClients() {
         List<ClientDomain> clientDomainList = clientService.getAllClients();
-        List<ClientResponseDto> clientDtoList = new java.util.ArrayList<>();
 
-        clientDomainList.forEach(clientDomain -> {
-            var clientDto = new ClientResponseDto();
-
-            clientDto.setNif(clientDomain.getNif());
-            clientDto.setName(clientDomain.getName());
-            clientDto.setAddress(clientDomain.getAddress());
-
-            clientDtoList.add(clientDto);
-        });
-
-        return clientDtoList;
+        return ClientMappings.toDto(clientDomainList);
     }
+
+
 }
