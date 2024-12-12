@@ -2,9 +2,18 @@ package com.travelport.projecttwo.services.domainModels;
 
 public class ClientDomain {
 
+    private String id;
     private String nif;
     private String name;
     private String address;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNif() {
         return nif;

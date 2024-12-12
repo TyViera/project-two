@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements IClientService {
@@ -30,5 +31,16 @@ public class ClientServiceImpl implements IClientService {
         });
 
         return clientDomainList;
+    }
+
+    @Override
+    public Optional<ClientDomain> getClientById(String id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public ClientDomain createClient(ClientDomain clientDomain) {
+        clientRepository.save(ClientMappings.toEntity(clientDomain));
+        return clientDomain;
     }
 }
