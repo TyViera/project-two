@@ -1,0 +1,560 @@
+openapi: 3.0.3
+info:
+  title: Travelport Store - OpenAPI 3.0
+  description: |-
+    This project implements a REST API using Spring Boot to manage clients and products while also getting sales and purchases data. The API offers comprehensive CRUD functionality, transaction management, and product sales report. The application includes basic security for sensitive operations and is thoroughly documented with Swagger/OpenAPI.
+    
+    Some useful links:
+    - [The store repository](https://github.com/annacano0/spring-boot-project-two)
+    - [The source API definition for the Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: client
+    description: Operations about clients.
+  - name: product
+    description: Operations about products
+  - name: sale
+    description: Operations related to product sales
+  - name: purchase
+    description: Manage product stock
+
+paths:
+  /clients:
+    get:
+      tags:
+        - client
+      summary: Get all clients
+      description: Get all clients on the store
+      operationId: getClients
+      responses:
+       '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Client' 
+    post:
+      tags:
+        - client
+      summary: Add a new client
+      description: Add a new client to the store
+      operationId: addClient
+      requestBody:
+        description: Add a new client to the store
+        content:
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/PostClient'          
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'          
+  
+  /clients/{id}:
+    get:
+      tags:
+        - client
+      summary: Get client by id
+      description: Get a specific client by id
+      operationId: getClientById
+      parameters:
+        - name: id
+          in: path
+          description: ID of client to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          description: Client not found
+    put:
+      tags:
+        - client
+      summary: Update an existing client
+      description: Update an existing client by Id
+      operationId: updateClient
+      parameters:
+        - name: id
+          in: path
+          description: ID of the client to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+          description: Update an existing client in the store
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateClient'
+
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          description: Client not found
+    delete:
+      tags:
+        - client
+      summary: Deletes a client
+      description: Deletes a client by their unique identifier. Returns an error if the client has orders.
+      operationId: deleteClient
+      parameters:
+        - name: id
+          in: path
+          description: Client ID to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Client not found
+        '422':
+          description: Client has active orders
+          
+  /clients/{id}/sales:
+    get:
+      tags:
+        - sale
+      summary: Get past sales of a specific client
+      description: Retrieve a list of all past sales made by a specific client, identified by their client ID.
+      operationId: getClientSales
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the client whose sales are to be retrieved
+          required: true
+          schema:
+            type: string
+            example: "12345"
+      responses:
+        '200':
+          description: A list of sales for the specified client
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "sale1234"
+                    products:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          product:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: "198772"
+                              name:
+                                type: string
+                                example: "Product A"
+                          quantity:
+                            type: string
+                            example: "2"
+        '404':
+          description: Not found 
+ 
+  /products:
+    get:
+      tags:
+        - product
+      summary: Get all products
+      description: Get all products on the store
+      operationId: getProducts
+      responses:
+       '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Product' 
+    post:
+      tags:
+        - product
+      summary: Add a new product
+      description: Add a new product to the store
+      operationId: addProduct
+      requestBody:
+        description: Add a new product to the store
+        content:
+          application/json: 
+            schema:
+              $ref: '#/components/schemas/PostProduct' 
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+  
+  /products/{id}:
+    get:
+      tags:
+        - product
+      summary: Get product by id
+      description: Get a specific product by id
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product' 
+        '404':
+          description: Product not found
+    put:
+      tags:
+        - product
+      summary: Update an existing product
+      description: Update an existing product by Id
+      operationId: updateProduct
+      parameters:
+        - name: id
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent product in the store
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProduct' 
+
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+        '404':
+          description: Product not found
+          
+    delete: 
+      tags:
+        - product
+      summary: Deletes a product
+      description: delete a product by Id
+      operationId: deleteProduct
+      parameters:
+        - name: id
+          in: path
+          description: Product id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Product not found
+        '422':
+          description: Product has been sold previously
+ 
+  /sales:
+    post:
+      tags:
+        - sale
+      summary: Sell product
+      description: Sell product of the store
+      operationId: sellProduct
+      security:
+        - basicAuth: []
+      requestBody:
+        description: Sell product
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: "The ID of the product being sold"
+                      example: "<product-id>"
+                  required:
+                    - id
+                client:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: "The ID of the client making the purchase"
+                      example: "<client-id>"
+                  required:
+                    - id
+                quantity:
+                  type: integer
+                  description: "The quantity of the product being sold. Must be a positive integer."
+                  minimum: 1
+                  example: 5
+              required:
+                - product
+                - client
+                - quantity
+      responses:
+        '201':
+          description: Successful operation
+          
+  /sales/most-sold-products:
+    get:
+      tags:
+        - sale
+      summary: Get the 5 most sold products
+      description: Get a report of the 5 most sold products, ordered by quantity sold in descending order.
+      operationId: getMostSoldProducts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "198772"
+                        name:
+                          type: string
+                          example: "Product Name"
+                    quantity:
+                      type: integer
+                      example: 150
+                      
+  /purchases:
+    post:
+      tags:
+        - purchase
+      summary: Purchase a product (renew stock)
+      description: This operation allows the store to purchase products and renew the stock
+      operationId: purchaseProduct
+      security:
+        - basicAuth: []
+      requestBody:
+        description: The product and purchase details needed to renew stock
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "198772"
+                supplier:
+                  type: string
+                  example: "Supplier Name"
+                quantity:
+                  type: integer
+                  minimum: 1
+                  example: 100
+              required:
+                - product
+                - supplier
+                - quantity
+        required: true
+      responses:
+        '201':
+          description: Product successfully purchased
+
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+          description: "Unique identifier for the client"
+        name:
+          type: string
+          example: "John Doe"
+          description: "(mandatory) Alphanumeric string, min length: 2, max length: 150"
+          minLength: 2
+          maxLength: 150
+        nif:
+          type: string
+          example: "123456789"
+          description: "(mandatory) Alphanumeric string, min length: 9, max length: 10"
+          minLength: 9
+          maxLength: 10
+        address:
+          type: string
+          example: "Rambles n2, 1r 1a"
+          description: "(optional) String, min length: 5, max length: 150"
+          minLength: 5
+          maxLength: 150
+      required:
+        - name
+        - nif
+      xml:
+        name: client
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174432"
+          description: "Unique identifier for the product"
+        name:
+          type: string
+          example: "Computer"
+          description: "Name of the product"
+          minLength: 2
+          maxLength: 100
+        code:
+          type: string
+          example: "123456789"
+          description: "(mandatory) alphanumeric string, min length: 5, max length: 10. Unique value"
+          minLength: 5
+          maxLength: 10
+       
+      required:
+        - name
+        - code
+      xml:
+        name: product
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174567"
+          description: "Unique identifier for the sale."
+        product:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174234"
+          description: "Id of the product sold in the sale."
+        quantity:
+          type: integer
+          example: 7
+          description: "Quantity of the product sold with positive integer value."
+        client:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+          description: "Id of the client who made the sale."
+      required:
+        - id
+        - product
+        - quantity
+        - client
+      xml:
+        name: sale
+        
+    UpdateClient:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "alphanumeric string, min length: 2, max length: 150"
+          minLength: 2
+          maxLength: 150
+        address:
+          type: string
+          description: "string, min length: 5, max length: 150"
+          minLength: 5
+          maxLength: 150
+
+    PostClient:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "(mandatory) alphanumeric string, min length: 2, max length: 150"
+        nif:
+          type: string
+          description: "(mandatory) alphanumeric string, min length: 9, max length: 10"
+        address:
+          type: string
+          description: "(optional) string, min length: 5, max length: 150"
+      required:
+        - name
+        - nif
+        
+    UpdateProduct:
+      type: object
+      properties:
+        name: 
+          type: string
+          example: "Computer"
+        code:
+          type: string
+          example: "123456789"
+          
+    PostProduct:
+      type: object
+      properties:
+        name: 
+          type: string
+          example: "Computer"
+        code:
+          type: string
+          example: "123456789"
+      required:
+        - name
+        - code
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: "Basic authentication for secure endpoints. The client must send the `Authorization` header with the value `Basic <base64(username:password)>`"
