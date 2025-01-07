@@ -14,4 +14,6 @@ public interface IProductService {
     ProductDomain createProduct(ProductDomain productDomain);
 
     ProductDomain updateProduct(String id, ProductDomain productDomain);
+
+    void deleteProduct(String id);
 }

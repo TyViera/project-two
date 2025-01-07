@@ -51,7 +51,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> putProduct(@PathVariable String id, @Validated @RequestBody ProductRequestDto productRequest) {
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable String id, @Validated @RequestBody ProductRequestDto productRequest) {
         var productDomain = ProductMappings.toDomain(productRequest);
 
         try {
@@ -60,6 +60,15 @@ public class ProductController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+        try {
+            productService.deleteProduct(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -56,4 +56,13 @@ public class ProductServiceImpl implements IProductService {
 
         return ProductMappings.toDomain(productEntity.get());
     }
+
+    @Override
+    public void deleteProduct(String id) {
+        var productEntity = productRepository.findById(id);
+        if (productEntity.isEmpty()) {
+            throw new IllegalArgumentException("Product not found");
+        }
+        productRepository.delete(productEntity.get());
+    }
 }
