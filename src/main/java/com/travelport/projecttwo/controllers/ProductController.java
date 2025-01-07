@@ -64,6 +64,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+        // TODO return 422 if product has sold previously (exists a sales in the system for this product)
         try {
             productService.deleteProduct(id);
             return ResponseEntity.noContent().build();
