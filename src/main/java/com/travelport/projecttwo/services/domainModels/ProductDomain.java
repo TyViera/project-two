@@ -5,7 +5,7 @@ public class ProductDomain {
     private String id;
     private String code;
     private String name;
-    private String stock;
+    private int stock;
 
     public String getId() {
         return id;
@@ -31,11 +31,11 @@ public class ProductDomain {
         this.name = name;
     }
 
-    public String getStock() {
+    public int getStock() {
         return stock;
     }
 
-    public void setStock(String stock) {
+    public void setStock(int stock) {
         this.stock = stock;
     }
 }
