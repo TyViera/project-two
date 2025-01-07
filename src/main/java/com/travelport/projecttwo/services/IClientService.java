@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface IClientService {
 
-    List<ClientDomain> getAllClients();
+    List<ClientDomain> getClients();
 
     Optional<ClientDomain> getClientById(String id);
 

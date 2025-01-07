@@ -21,7 +21,7 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
-    public List<ClientDomain> getAllClients() {
+    public List<ClientDomain> getClients() {
         List<ClientEntity> clientEntityList = clientRepository.findAll();
         List<ClientDomain> clientDomainList = new ArrayList<>(List.of());
 

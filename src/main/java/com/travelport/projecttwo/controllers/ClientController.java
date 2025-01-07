@@ -25,7 +25,7 @@ public class ClientController {
 
     @GetMapping
     public List<ClientResponseDto> getClients() {
-        List<ClientDomain> clientDomainList = clientService.getAllClients();
+        List<ClientDomain> clientDomainList = clientService.getClients();
 
         return ClientMappings.toDto(clientDomainList);
     }
