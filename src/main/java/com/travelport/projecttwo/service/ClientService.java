@@ -1,10 +1,10 @@
 package com.travelport.projecttwo.service;
 
-import com.travelport.projecttwo.model.Client;
+import com.travelport.projecttwo.entities.Client;
 
 import java.util.List;
 
 public interface ClientService {
-    List<Client> getAll();
+    List<Client> getAllClients();
 
 }
