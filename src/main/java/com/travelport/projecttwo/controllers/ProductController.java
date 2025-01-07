@@ -28,6 +28,17 @@ public class ProductController {
         return ResponseEntity.ok(ProductMappings.toDto(products));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable String id) {
+        var productDomain = productService.getProductById(id);
+
+        if (productDomain.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ProductMappings.toDto(productDomain.get()));
+    }
+
     @PostMapping
     public ResponseEntity<ProductResponseDto> postProduct(@Validated @RequestBody ProductRequestDto productRequest) {
         var productDomain = ProductMappings.toDomain(productRequest);

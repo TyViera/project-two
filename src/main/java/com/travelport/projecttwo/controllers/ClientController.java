@@ -32,13 +32,13 @@ public class ClientController {
 
     @GetMapping("{id}")
     public ResponseEntity<ClientResponseDto> getClientById(@PathVariable String id) {
-            var clientDomain = clientService.getClientById(id);
+        var clientDomain = clientService.getClientById(id);
 
-        if (clientDomain.isPresent()) {
-            return ResponseEntity.ok(ClientMappings.toDto(clientDomain.get()));
+        if (clientDomain.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ClientMappings.toDto(clientDomain.get()));
     }
 
     @PostMapping
