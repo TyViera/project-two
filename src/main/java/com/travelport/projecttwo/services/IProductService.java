@@ -12,4 +12,6 @@ public interface IProductService {
     Optional<ProductDomain> getProductById(String id);
 
     ProductDomain createProduct(ProductDomain productDomain);
+
+    ProductDomain updateProduct(String id, ProductDomain productDomain);
 }

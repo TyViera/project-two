@@ -42,4 +42,18 @@ public class ProductServiceImpl implements IProductService {
 
         return ProductMappings.toDomain(productEntity);
     }
+
+    @Override
+    public ProductDomain updateProduct(String id, ProductDomain productDomain) {
+        var productEntity = productRepository.findById(id);
+        if (productEntity.isEmpty()) {
+            throw new IllegalArgumentException("Product not found");
+        }
+        productEntity.get().setName(productDomain.getName());
+        productEntity.get().setCode(productDomain.getCode());
+
+        productRepository.save(productEntity.get());
+
+        return ProductMappings.toDomain(productEntity.get());
+    }
 }

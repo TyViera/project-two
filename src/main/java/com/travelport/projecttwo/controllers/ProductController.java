@@ -49,4 +49,17 @@ public class ProductController {
 
         return ResponseEntity.created(location).body(ProductMappings.toDto(savedProduct));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> putProduct(@PathVariable String id, @Validated @RequestBody ProductRequestDto productRequest) {
+        var productDomain = ProductMappings.toDomain(productRequest);
+
+        try {
+            var savedProduct = productService.updateProduct(id, productDomain);
+            return ResponseEntity.ok(ProductMappings.toDto(savedProduct));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
 }
