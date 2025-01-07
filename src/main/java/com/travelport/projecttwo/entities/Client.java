@@ -23,12 +23,8 @@ public class Client {
     private String name;
 
     @Column(name = "address", nullable = true, length = 255)
-    @Size(min=1, max = 255)
+    @Size(min=10, max = 255)
     private String address;
-
-    public String generateId(){
-        return UUID.randomUUID().toString();
-    }
 
     public String getId() {
         return id;
