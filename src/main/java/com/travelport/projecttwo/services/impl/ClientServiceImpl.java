@@ -35,12 +35,18 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public Optional<ClientDomain> getClientById(String id) {
-        return Optional.empty();
+        Optional<ClientEntity> clientEntity = clientRepository.findById(id);
+        return clientEntity.map(ClientMappings::toDomain);
     }
 
     @Override
     public ClientDomain createClient(ClientDomain clientDomain) {
         clientRepository.save(ClientMappings.toEntity(clientDomain));
         return clientDomain;
+    }
+
+    @Override
+    public void updateClient(ClientDomain clientDomain) {
+        clientRepository.save(ClientMappings.toEntity(clientDomain));
     }
 }

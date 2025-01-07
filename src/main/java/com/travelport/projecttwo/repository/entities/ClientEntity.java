@@ -16,6 +16,11 @@ public class ClientEntity {
     @Id
     @NotNull
     @NotBlank
+    @Length(min = 36, max = 36)
+    private String id;
+
+    @NotNull
+    @NotBlank
     @Length(min = 9, max = 10)
     private String nif;
 
@@ -26,6 +31,14 @@ public class ClientEntity {
 
     @Length(min = 5, max = 150)
     private String address;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -53,13 +66,12 @@ public class ClientEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ClientEntity client)) return false;
-        return Objects.equals(nif, client.nif);
+        if (!(o instanceof ClientEntity that)) return false;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(nif);
+        return Objects.hashCode(id);
     }
 }

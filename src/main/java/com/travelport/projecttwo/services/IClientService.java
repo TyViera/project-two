@@ -13,4 +13,6 @@ public interface IClientService {
     Optional<ClientDomain> getClientById(String id);
 
     ClientDomain createClient(ClientDomain clientDomain);
+
+    void updateClient(ClientDomain clientDomain);
 }
