@@ -49,4 +49,13 @@ public class ClientServiceImpl implements IClientService {
     public void updateClient(ClientDomain clientDomain) {
         clientRepository.save(ClientMappings.toEntity(clientDomain));
     }
+
+    @Override
+    public void deleteClient(String id) {
+        var findClient = clientRepository.findById(id);
+        if (findClient.isEmpty()) {
+            throw new IllegalArgumentException("Client not found");
+        }
+        clientRepository.delete(findClient.get());
+    }
 }

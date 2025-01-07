@@ -66,4 +66,14 @@ public class ClientController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteClient(@PathVariable String id) {
+        try{
+            clientService.deleteClient(id);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
 }
