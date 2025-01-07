@@ -46,8 +46,16 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
-    public void updateClient(ClientDomain clientDomain) {
-        clientRepository.save(ClientMappings.toEntity(clientDomain));
+    public ClientDomain updateClient(String id, ClientDomain clientDomain) {
+        var findClient = clientRepository.findById(id);
+        if (findClient.isEmpty()) {
+            throw new IllegalArgumentException("Client not found");
+        }
+        findClient.get().setNif(clientDomain.getNif());
+        findClient.get().setName(clientDomain.getName());
+        findClient.get().setAddress(clientDomain.getAddress());
+        clientRepository.save(findClient.get());
+        return findClient.map(ClientMappings::toDomain).get();
     }
 
     @Override

@@ -56,19 +56,17 @@ public class ClientController {
 
     @PutMapping("{id}")
     public ResponseEntity<ClientResponseDto> updateClient(@PathVariable String id, @Validated @RequestBody ClientRequestDto clientRequest) {
-        var clientDomain = clientService.getClientById(id);
-        if (clientDomain.isPresent()) {
-            clientDomain.get().setNif(clientRequest.getNif());
-            clientDomain.get().setName(clientRequest.getName());
-            clientDomain.get().setAddress(clientRequest.getAddress());
-            clientService.updateClient(clientDomain.get());
-            return ResponseEntity.ok(ClientMappings.toDto(clientDomain.get()));
+        try{
+            var clientDomain = clientService.updateClient(id, ClientMappings.toDomain(clientRequest));
+            return ResponseEntity.ok(ClientMappings.toDto(clientDomain));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable String id) {
+        // TODO return 422 if client has orders (sales in the system)
         try{
             clientService.deleteClient(id);
         } catch (IllegalArgumentException e) {

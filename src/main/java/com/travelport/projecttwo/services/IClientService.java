@@ -14,7 +14,7 @@ public interface IClientService {
 
     ClientDomain createClient(ClientDomain clientDomain);
 
-    void updateClient(ClientDomain clientDomain);
+    ClientDomain updateClient(String id, ClientDomain clientDomain);
 
     void deleteClient(String id);
 }
