@@ -4,6 +4,9 @@ import com.travelport.projecttwo.controllers.dtos.ProductRequestDto;
 import com.travelport.projecttwo.controllers.dtos.ProductResponseDto;
 import com.travelport.projecttwo.services.domainModels.ProductDomain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductMappings {
 
     public static ProductDomain toDomain(ProductRequestDto productRequest) {
@@ -21,4 +24,18 @@ public class ProductMappings {
 
         return productResponse;
     }
+
+    public static List<ProductResponseDto> toDto(List<ProductDomain> products) {
+        List<ProductResponseDto> productResponseList = new ArrayList<>();
+
+        products.forEach(product -> {
+            var productResponse = toDto(product);
+
+            productResponseList.add(productResponse);
+        });
+
+        return productResponseList;
+    }
+
+
 }

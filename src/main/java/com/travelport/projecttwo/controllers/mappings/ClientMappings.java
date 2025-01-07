@@ -1,6 +1,5 @@
 package com.travelport.projecttwo.controllers.mappings;
 
-import ch.qos.logback.core.net.server.Client;
 import com.travelport.projecttwo.controllers.dtos.ClientRequestDto;
 import com.travelport.projecttwo.controllers.dtos.ClientResponseDto;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;

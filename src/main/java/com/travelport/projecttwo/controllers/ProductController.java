@@ -6,12 +6,10 @@ import com.travelport.projecttwo.controllers.mappings.ProductMappings;
 import com.travelport.projecttwo.services.IProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -21,6 +19,13 @@ public class ProductController {
 
     public ProductController(IProductService productService) {
         this.productService = productService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getProducts() {
+        var products = productService.getProducts();
+
+        return ResponseEntity.ok(ProductMappings.toDto(products));
     }
 
     @PostMapping

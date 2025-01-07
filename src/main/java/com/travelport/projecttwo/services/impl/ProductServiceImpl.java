@@ -6,7 +6,9 @@ import com.travelport.projecttwo.services.domainModels.ProductDomain;
 import com.travelport.projecttwo.services.mappings.ProductMappings;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -15,6 +17,13 @@ public class ProductServiceImpl implements IProductService {
 
     public ProductServiceImpl(IProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    @Override
+    public List<ProductDomain> getProducts() {
+        return productRepository.findAll().stream()
+                .map(ProductMappings::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
