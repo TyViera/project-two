@@ -14,17 +14,14 @@ import java.util.Objects;
 public class ClientEntity {
 
     @Id
-    @NotNull
     @NotBlank
     @Length(min = 36, max = 36)
     private String id;
 
-    @NotNull
     @NotBlank
     @Length(min = 9, max = 10)
     private String nif;
 
-    @NotNull
     @NotBlank
     @Length(min = 2, max = 150)
     private String name;
