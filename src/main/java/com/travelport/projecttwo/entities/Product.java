@@ -26,6 +26,9 @@ public class Product {
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Code must be alphanumeric")
     private String code;
 
+    private int quantity;
+
+    // Getters and Setters
     public UUID getId() {
         return id;
     }
@@ -48,5 +51,13 @@ public class Product {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
