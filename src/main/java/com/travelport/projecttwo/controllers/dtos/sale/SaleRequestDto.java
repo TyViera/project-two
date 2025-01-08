@@ -3,22 +3,35 @@ package com.travelport.projecttwo.controllers.dtos.sale;
 import com.travelport.projecttwo.controllers.dtos.client.ClientSaleDto;
 import com.travelport.projecttwo.controllers.dtos.product.ProductSaleDto;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.hibernate.validator.constraints.Length;
 
 public class SaleRequestDto {
 
-    @NotBlank
-    @Length(min = 36, max = 36)
+    @NotNull
     private ProductSaleDto product;
 
-    @NotBlank
-    @Length(min = 36, max = 36)
+    @NotNull
     private ClientSaleDto client;
 
-    @NotBlank
     @Positive
     private int quantity;
+
+    public ProductSaleDto getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductSaleDto product) {
+        this.product = product;
+    }
+
+    public ClientSaleDto getClient() {
+        return client;
+    }
+
+    public void setClient(ClientSaleDto client) {
+        this.client = client;
+    }
 
     public int getQuantity() {
         return quantity;
