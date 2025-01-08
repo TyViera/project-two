@@ -1,7 +1,7 @@
 package com.travelport.projecttwo.controllers.mappings;
 
-import com.travelport.projecttwo.controllers.dtos.ClientRequestDto;
-import com.travelport.projecttwo.controllers.dtos.ClientResponseDto;
+import com.travelport.projecttwo.controllers.dtos.client.ClientRequestDto;
+import com.travelport.projecttwo.controllers.dtos.client.ClientResponseDto;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;
 
 import java.util.List;

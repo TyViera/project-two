@@ -1,4 +1,4 @@
-package com.travelport.projecttwo.controllers.dtos;
+package com.travelport.projecttwo.controllers.dtos.product;
 
 public class ProductResponseDto {
 

@@ -1,7 +1,7 @@
 package com.travelport.projecttwo.controllers.mappings;
 
-import com.travelport.projecttwo.controllers.dtos.ProductRequestDto;
-import com.travelport.projecttwo.controllers.dtos.ProductResponseDto;
+import com.travelport.projecttwo.controllers.dtos.product.ProductRequestDto;
+import com.travelport.projecttwo.controllers.dtos.product.ProductResponseDto;
 import com.travelport.projecttwo.services.domainModels.ProductDomain;
 
 import java.util.ArrayList;

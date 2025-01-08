@@ -1,21 +1,22 @@
-package com.travelport.projecttwo.controllers.dtos;
+package com.travelport.projecttwo.controllers.dtos.client;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class ClientRequestDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ClientResponseDto {
 
-    @NotBlank
-    @Length(min = 9, max = 10)
+    private String id;
     private String nif;
-
-    @NotBlank
-    @Length(min = 2, max = 150)
     private String name;
-
-    @Length(min = 5, max = 150)
     private String address;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNif() {
         return nif;
@@ -40,4 +41,5 @@ public class ClientRequestDto {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.travelport.projecttwo.controllers;
 
-import com.travelport.projecttwo.controllers.dtos.ClientRequestDto;
-import com.travelport.projecttwo.controllers.dtos.ClientResponseDto;
+import com.travelport.projecttwo.controllers.dtos.client.ClientRequestDto;
+import com.travelport.projecttwo.controllers.dtos.client.ClientResponseDto;
 import com.travelport.projecttwo.controllers.mappings.ClientMappings;
 import com.travelport.projecttwo.services.IClientService;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;

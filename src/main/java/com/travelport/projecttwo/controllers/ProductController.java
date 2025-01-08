@@ -1,7 +1,7 @@
 package com.travelport.projecttwo.controllers;
 
-import com.travelport.projecttwo.controllers.dtos.ProductRequestDto;
-import com.travelport.projecttwo.controllers.dtos.ProductResponseDto;
+import com.travelport.projecttwo.controllers.dtos.product.ProductRequestDto;
+import com.travelport.projecttwo.controllers.dtos.product.ProductResponseDto;
 import com.travelport.projecttwo.controllers.mappings.ProductMappings;
 import com.travelport.projecttwo.services.IProductService;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> postProduct(@Validated @RequestBody ProductRequestDto productRequest) {
+    public ResponseEntity<ProductResponseDto> createProduct(@Validated @RequestBody ProductRequestDto productRequest) {
         var productDomain = ProductMappings.toDomain(productRequest);
 
         var savedProduct = productService.createProduct(productDomain);

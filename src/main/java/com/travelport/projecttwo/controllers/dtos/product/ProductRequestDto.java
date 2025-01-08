@@ -1,4 +1,4 @@
-package com.travelport.projecttwo.controllers.dtos;
+package com.travelport.projecttwo.controllers.dtos.product;
 
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
