@@ -1,17 +1,19 @@
-package com.travelport.projecttwo.controllers.dtos.sale;
+package com.travelport.projecttwo.controllers.dtos.purchase;
 
-import com.travelport.projecttwo.controllers.dtos.client.ClientSaleDto;
 import com.travelport.projecttwo.controllers.dtos.product.ProductSaleDto;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.hibernate.validator.constraints.Length;
 
-public class SaleRequestDto {
+public class PurchaseRequestDto {
 
     @NotNull
     private ProductSaleDto product;
 
-    @NotNull
-    private ClientSaleDto client;
+    @NotBlank
+    @Length(min = 2, max = 50)
+    private String supplier;
 
     @Positive
     private int quantity;
@@ -24,12 +26,12 @@ public class SaleRequestDto {
         this.product = product;
     }
 
-    public ClientSaleDto getClient() {
-        return client;
+    public String getSupplier() {
+        return supplier;
     }
 
-    public void setClient(ClientSaleDto client) {
-        this.client = client;
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
     }
 
     public int getQuantity() {

@@ -1,7 +1,7 @@
 package com.travelport.projecttwo.controllers;
 
-import com.travelport.projecttwo.controllers.dtos.sale.SaleRequestDto;
-import com.travelport.projecttwo.services.ISaleService;
+import com.travelport.projecttwo.controllers.dtos.purchase.PurchaseRequestDto;
+import com.travelport.projecttwo.services.IPurchaseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,21 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/sales")
-public class SaleController {
+@RequestMapping("/purchases")
+public class PurchasesController {
+    // TODO auth
+    private final IPurchaseService purchaseService;
 
-    private final ISaleService saleService;
-
-    public SaleController(ISaleService saleService) {
-        this.saleService = saleService;
+    public PurchasesController(IPurchaseService purchaseService) {
+        this.purchaseService = purchaseService;
     }
 
     @PostMapping
-    public ResponseEntity createSale(@Validated @RequestBody SaleRequestDto saleRequest) {
-        // TODO auth
+    public ResponseEntity createPurchase(@Validated @RequestBody PurchaseRequestDto purchaseRequest) {
         try {
-            saleService.createSale(saleRequest);
-            URI location = URI.create("/sales");
+            purchaseService.createPurchase(purchaseRequest);
+            URI location = URI.create("/purchases");
             return ResponseEntity.created(location).build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
