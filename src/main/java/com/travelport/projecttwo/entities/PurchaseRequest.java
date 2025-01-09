@@ -32,13 +32,13 @@ public class PurchaseRequest {
     }
 
     public static class ProductRequest {
-        private String id;
+        private UUID id;
 
         public UUID getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(UUID id) {
             this.id = id;
         }
     }
