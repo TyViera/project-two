@@ -14,7 +14,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/purchases")
 public class PurchasesController {
-    // TODO auth
+
     private final IPurchaseService purchaseService;
 
     public PurchasesController(IPurchaseService purchaseService) {

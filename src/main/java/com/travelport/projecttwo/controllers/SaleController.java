@@ -22,13 +22,11 @@ public class SaleController {
 
     @GetMapping("most-sold-products")
     public ResponseEntity<List<MostSoldProductsDto>> getMostSoldProducts() {
-        // TODO auth
         return ResponseEntity.ok(saleService.getMostSoldProducts());
     }
 
     @PostMapping
     public ResponseEntity createSale(@Validated @RequestBody SaleRequestDto saleRequest) {
-        // TODO auth
         try {
             saleService.createSale(saleRequest);
             URI location = URI.create("/sales");
