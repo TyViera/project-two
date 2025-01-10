@@ -33,7 +33,7 @@ Input:
 }
 ```
 
-Output:a
+Output:
 
 ```json
 {
@@ -99,6 +99,9 @@ Defined by `POST /sales` the input must be:
     {
       "id": "<product-id>",
       "quantity": "positive integer number"
+    },
+    {
+      ...
     }
   ]
 }
@@ -114,11 +117,16 @@ Defined by `POST /purchases` the input must be:
 
 ```json
 {
-  "product": {
-    "id": "<product-id>"
-  },
   "supplier": "<supplier-name>",
-  "quantity": "positive integer number"
+  "products": [
+    {
+      "id": "<product-id>",
+      "quantity": "positive integer number"
+    },
+    {
+      ...
+    }
+  ]
 }
 ```
 
@@ -131,15 +139,20 @@ And the output must be a `201` without response body
 Defined by `GET /clients/{id}/sales` being `{id}` the client id, and the output must be a `200` with the next structure:
 
 ```json
-{
-  "supplier": "<supplier-name>",
-  "products": [
-    {
-      "id": "<product-id>",
-      "quantity": "positive integer number"
-    }
-  ]
-}
+[
+  {
+    "id": "<sale-id>",
+    "products": [
+      {
+        "product": {
+          "id": "<product-id>",
+          "name": "<product-name>"
+        },
+        "quantity": "<sale-quantity>"
+      }
+    ]
+  }
+]
 ```
 
 ### See income report - 5 most sold products
