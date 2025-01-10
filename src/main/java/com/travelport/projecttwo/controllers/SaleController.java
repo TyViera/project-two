@@ -1,15 +1,14 @@
 package com.travelport.projecttwo.controllers;
 
+import com.travelport.projecttwo.controllers.dtos.sale.MostSoldProductsDto;
 import com.travelport.projecttwo.controllers.dtos.sale.SaleRequestDto;
 import com.travelport.projecttwo.services.ISaleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/sales")
@@ -19,6 +18,12 @@ public class SaleController {
 
     public SaleController(ISaleService saleService) {
         this.saleService = saleService;
+    }
+
+    @GetMapping("most-sold-products")
+    public ResponseEntity<List<MostSoldProductsDto>> getMostSoldProducts() {
+        // TODO auth
+        return ResponseEntity.ok(saleService.getMostSoldProducts());
     }
 
     @PostMapping

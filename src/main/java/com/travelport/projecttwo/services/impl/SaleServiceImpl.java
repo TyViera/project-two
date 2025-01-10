@@ -1,5 +1,7 @@
 package com.travelport.projecttwo.services.impl;
 
+import com.travelport.projecttwo.controllers.dtos.sale.MostSoldProductsDto;
+import com.travelport.projecttwo.controllers.dtos.sale.ProductInMostSoldProducts;
 import com.travelport.projecttwo.controllers.dtos.sale.SaleRequestDto;
 import com.travelport.projecttwo.repository.IClientRepository;
 import com.travelport.projecttwo.repository.IProductRepository;
@@ -9,6 +11,7 @@ import com.travelport.projecttwo.services.domainModels.SaleDomain;
 import com.travelport.projecttwo.services.mappings.SaleMappings;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -53,6 +56,26 @@ public class SaleServiceImpl implements ISaleService {
         sale.setQuantity(saleRequest.getQuantity());
 
         saleRepository.save(SaleMappings.toEntity(sale));
+
+    }
+
+    @Override
+    public List<MostSoldProductsDto> getMostSoldProducts() {
+        var top5SoldProducts = saleRepository.findMostSoldProducts();
+
+        return top5SoldProducts.stream()
+                .map(row -> {
+                    var id = (String) row[0];
+                    var name = (String) row[1];
+                    var quantity = ((Number) row[2]).intValue() ;
+
+                    var product = new ProductInMostSoldProducts(id, name);
+                    var mostSoldProductsDto = new MostSoldProductsDto();
+                    mostSoldProductsDto.setProduct(product);
+                    mostSoldProductsDto.setQuantity(quantity);
+
+                    return mostSoldProductsDto;
+                }).toList();
 
     }
 }
