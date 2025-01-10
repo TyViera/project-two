@@ -1,6 +1,7 @@
 package com.travelport.projecttwo.services;
 
 
+import com.travelport.projecttwo.controllers.dtos.past_sales.ClientPastSalesDto;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface IClientService {
     ClientDomain updateClient(String id, ClientDomain clientDomain);
 
     void deleteClient(String id);
+
+    List<ClientPastSalesDto> getClientSales(String id);
 }

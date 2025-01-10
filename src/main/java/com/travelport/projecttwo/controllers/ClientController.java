@@ -1,9 +1,12 @@
 package com.travelport.projecttwo.controllers;
 
+import com.travelport.projecttwo.controllers.dtos.past_sales.ClientPastSalesDto;
 import com.travelport.projecttwo.controllers.dtos.client.ClientRequestDto;
 import com.travelport.projecttwo.controllers.dtos.client.ClientResponseDto;
 import com.travelport.projecttwo.controllers.mappings.ClientMappings;
+import com.travelport.projecttwo.repository.ISaleRepository;
 import com.travelport.projecttwo.services.IClientService;
+import com.travelport.projecttwo.services.ISaleService;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +42,16 @@ public class ClientController {
         }
 
         return ResponseEntity.ok(ClientMappings.toDto(clientDomain.get()));
+    }
+
+    @GetMapping("{id}/sales")
+    public ResponseEntity<List<ClientPastSalesDto>> getClientSales(@PathVariable String id) {
+        try {
+            var sales = clientService.getClientSales(id);
+            return ResponseEntity.ok(sales);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping

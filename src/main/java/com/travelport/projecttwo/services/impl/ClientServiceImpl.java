@@ -1,6 +1,10 @@
 package com.travelport.projecttwo.services.impl;
 
+import com.travelport.projecttwo.controllers.dtos.past_sales.ClientPastSalesDto;
+import com.travelport.projecttwo.controllers.dtos.past_sales.ProductInPastSalesDto;
+import com.travelport.projecttwo.controllers.dtos.past_sales.ProductsBoughtByClientDto;
 import com.travelport.projecttwo.repository.IClientRepository;
+import com.travelport.projecttwo.repository.ISaleRepository;
 import com.travelport.projecttwo.repository.entities.ClientEntity;
 import com.travelport.projecttwo.services.IClientService;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;
@@ -15,9 +19,11 @@ import java.util.Optional;
 public class ClientServiceImpl implements IClientService {
 
     private final IClientRepository clientRepository;
+    private final ISaleRepository saleRepository;
 
-    public ClientServiceImpl(IClientRepository clientRepository) {
+    public ClientServiceImpl(IClientRepository clientRepository, ISaleRepository saleRepository) {
         this.clientRepository = clientRepository;
+        this.saleRepository = saleRepository;
     }
 
     @Override
@@ -65,5 +71,29 @@ public class ClientServiceImpl implements IClientService {
             throw new IllegalArgumentException("Client not found");
         }
         clientRepository.delete(findClient.get());
+    }
+
+    @Override
+    public List<ClientPastSalesDto> getClientSales(String clientId) {
+        var client = clientRepository.findById(clientId);
+        if (client.isEmpty()) {
+            throw new IllegalArgumentException("Client not found");
+        }
+
+        var sales = saleRepository.findAllByClientId(clientId);
+
+        return sales.stream().map(sale -> {
+            List<ProductsBoughtByClientDto> products = List.of(
+                    new ProductsBoughtByClientDto(
+                            new ProductInPastSalesDto(sale.getProduct().getId(), sale.getProduct().getName()),
+                            sale.getQuantity()
+                    )
+            );
+            var dto = new ClientPastSalesDto();
+            dto.setId(sale.getId());
+            dto.setProducts(products);
+
+            return dto;
+        }).toList();
     }
 }
