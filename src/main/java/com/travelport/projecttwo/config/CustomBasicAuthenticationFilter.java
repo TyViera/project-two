@@ -10,8 +10,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import java.io.IOException;
 
 public class CustomBasicAuthenticationFilter extends BasicAuthenticationFilter {
-    public CustomBasicAuthenticationFilter() {
-        super((AuthenticationManager) SecurityContextHolder.getContext().getAuthentication());
+    public CustomBasicAuthenticationFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
     }
 
     @Override
