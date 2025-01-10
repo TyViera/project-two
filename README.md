@@ -92,13 +92,18 @@ Defined by `POST /sales` the input must be:
 
 ```json
 {
-  "product": {
-    "id": "<product-id>"
-  },
   "client": {
     "id": "<client-id>"
   },
-  "quantity": "positive integer number"
+  "products": [
+    {
+      "id": "<product-id>",
+      "quantity": "positive integer number"
+    },
+    {
+      ...
+    }
+  ]
 }
 ```
 

@@ -5,11 +5,14 @@ import com.travelport.projecttwo.controllers.dtos.sale.ProductInMostSoldProducts
 import com.travelport.projecttwo.controllers.dtos.sale.SaleRequestDto;
 import com.travelport.projecttwo.repository.IClientRepository;
 import com.travelport.projecttwo.repository.IProductRepository;
-import com.travelport.projecttwo.repository.ISaleRepository;
+import com.travelport.projecttwo.repository.ISalesCabRepository;
+import com.travelport.projecttwo.repository.ISalesDetRepository;
 import com.travelport.projecttwo.services.ISaleService;
-import com.travelport.projecttwo.services.domainModels.SaleDomain;
+import com.travelport.projecttwo.services.domainModels.SaleCabDomain;
+import com.travelport.projecttwo.services.domainModels.SaleDetDomain;
 import com.travelport.projecttwo.services.mappings.SaleMappings;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,49 +22,54 @@ public class SaleServiceImpl implements ISaleService {
 
     private final IProductRepository productRepository;
     private final IClientRepository clientRepository;
-    private final ISaleRepository saleRepository;
+    private final ISalesCabRepository salesCabRepository;
+    private final ISalesDetRepository salesDetRepository;
 
-    public SaleServiceImpl(IProductRepository productRepository, IClientRepository clientRepository, ISaleRepository saleRepository) {
+    public SaleServiceImpl(IProductRepository productRepository, IClientRepository clientRepository, ISalesCabRepository salesCabRepository, ISalesDetRepository salesDetRepository) {
         this.productRepository = productRepository;
         this.clientRepository = clientRepository;
-        this.saleRepository = saleRepository;
+        this.salesCabRepository = salesCabRepository;
+        this.salesDetRepository = salesDetRepository;
     }
 
     @Override
+    @Transactional
     public void createSale(SaleRequestDto saleRequest) {
-        var product = productRepository.findById(saleRequest.getProduct().getId());
 
-        if (product.isEmpty()) {
-            throw new IllegalArgumentException("Product not found");
-        }
+        var saleCabDomain = SaleMappings.toDomain(saleRequest);
 
-        var client = clientRepository.findById(saleRequest.getClient().getId());
-
-        if (client.isEmpty()) {
+        var clientOpt = clientRepository.findById(saleCabDomain.getClientId());
+        if (clientOpt.isEmpty()) {
             throw new IllegalArgumentException("Client not found");
         }
 
-        if (product.get().getStock() < saleRequest.getQuantity()) {
-            throw new IllegalArgumentException("Not enough stock");
+        for (SaleDetDomain detail : saleCabDomain.getDetails()) {
+            var productOpt = productRepository.findById(detail.getId());
+            if (productOpt.isEmpty()) {
+                throw new IllegalArgumentException("Product not found");
+            }
+
+            var product = productOpt.get();
+
+            if (product.getStock() < detail.getQuantity()) {
+                throw new IllegalArgumentException("Product out of stock");
+            }
+
+            product.setStock(product.getStock() - detail.getQuantity());
+            productRepository.save(product);
         }
 
-        product.get().setStock(product.get().getStock() - saleRequest.getQuantity());
+        saleCabDomain.setId(UUID.randomUUID().toString());
 
-        productRepository.save(product.get());
+        var saleCabEntity = SaleMappings.toEntity(saleCabDomain);
 
-        var sale = new SaleDomain();
-        sale.setId(UUID.randomUUID().toString());
-        sale.setProductId(product.get().getId());
-        sale.setClientId(client.get().getId());
-        sale.setQuantity(saleRequest.getQuantity());
-
-        saleRepository.save(SaleMappings.toEntity(sale));
+        salesCabRepository.save(saleCabEntity);
 
     }
 
     @Override
     public List<MostSoldProductsDto> getMostSoldProducts() {
-        var top5SoldProducts = saleRepository.findMostSoldProducts();
+        var top5SoldProducts = salesDetRepository.findMostSoldProducts();
 
         return top5SoldProducts.stream()
                 .map(row -> {

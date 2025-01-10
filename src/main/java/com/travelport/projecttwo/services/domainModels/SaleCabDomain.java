@@ -1,11 +1,12 @@
 package com.travelport.projecttwo.services.domainModels;
 
-public class SaleDomain {
+import java.util.List;
+
+public class SaleCabDomain {
 
     private String id;
-    private String productId;
     private String clientId;
-    private int quantity;
+    private List<SaleDetDomain> details;
 
     public String getId() {
         return id;
@@ -13,14 +14,6 @@ public class SaleDomain {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
     }
 
     public String getClientId() {
@@ -31,11 +24,11 @@ public class SaleDomain {
         this.clientId = clientId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<SaleDetDomain> getDetails() {
+        return details;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setDetails(List<SaleDetDomain> details) {
+        this.details = details;
     }
 }

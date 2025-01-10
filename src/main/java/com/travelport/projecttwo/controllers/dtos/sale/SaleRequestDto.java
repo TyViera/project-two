@@ -5,24 +5,15 @@ import com.travelport.projecttwo.controllers.dtos.product.ProductSaleDto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-public class SaleRequestDto {
+import java.util.List;
 
-    @NotNull
-    private ProductSaleDto product;
+public class SaleRequestDto {
 
     @NotNull
     private ClientSaleDto client;
 
-    @Positive
-    private int quantity;
-
-    public ProductSaleDto getProduct() {
-        return product;
-    }
-
-    public void setProduct(ProductSaleDto product) {
-        this.product = product;
-    }
+    @NotNull
+    private List<ProductSaleDto> products;
 
     public ClientSaleDto getClient() {
         return client;
@@ -32,11 +23,11 @@ public class SaleRequestDto {
         this.client = client;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<ProductSaleDto> getProducts() {
+        return products;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setProducts(List<ProductSaleDto> products) {
+        this.products = products;
     }
 }

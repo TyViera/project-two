@@ -4,7 +4,8 @@ import com.travelport.projecttwo.controllers.dtos.past_sales.ClientPastSalesDto;
 import com.travelport.projecttwo.controllers.dtos.past_sales.ProductInPastSalesDto;
 import com.travelport.projecttwo.controllers.dtos.past_sales.ProductsBoughtByClientDto;
 import com.travelport.projecttwo.repository.IClientRepository;
-import com.travelport.projecttwo.repository.ISaleRepository;
+import com.travelport.projecttwo.repository.IProductRepository;
+import com.travelport.projecttwo.repository.ISalesCabRepository;
 import com.travelport.projecttwo.repository.entities.ClientEntity;
 import com.travelport.projecttwo.services.IClientService;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;
@@ -19,11 +20,13 @@ import java.util.Optional;
 public class ClientServiceImpl implements IClientService {
 
     private final IClientRepository clientRepository;
-    private final ISaleRepository saleRepository;
+    private final ISalesCabRepository salesCabRepository;
+    private final IProductRepository productRepository;
 
-    public ClientServiceImpl(IClientRepository clientRepository, ISaleRepository saleRepository) {
+    public ClientServiceImpl(IClientRepository clientRepository, ISalesCabRepository salesCabRepository, IProductRepository productRepository) {
         this.clientRepository = clientRepository;
-        this.saleRepository = saleRepository;
+        this.salesCabRepository = salesCabRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -80,17 +83,27 @@ public class ClientServiceImpl implements IClientService {
             throw new IllegalArgumentException("Client not found");
         }
 
-        var sales = saleRepository.findAllByClientId(clientId);
+        var cabs = salesCabRepository.findAllByClientId(clientId);
 
-        return sales.stream().map(sale -> {
-            List<ProductsBoughtByClientDto> products = List.of(
-                    new ProductsBoughtByClientDto(
-                            new ProductInPastSalesDto(sale.getProduct().getId(), sale.getProduct().getName()),
-                            sale.getQuantity()
-                    )
-            );
+        return cabs.stream().map(saleCab -> {
+            List<ProductsBoughtByClientDto> products = saleCab.getDetails()
+                    .stream()
+                    .map(det -> {
+                        var productId = det.getId().getProductId();
+                        var productEntityOpt = productRepository.findById(productId);
+                        if (productEntityOpt.isEmpty()) {
+                            throw new IllegalArgumentException("Product not found");
+                        }
+                        var productEntity = productEntityOpt.get();
+                        var productName = productEntity.getName();
+
+                        var productDto = new ProductInPastSalesDto(productId, productName);
+                        return new ProductsBoughtByClientDto(productDto, det.getQuantity());
+                    })
+                    .toList();
+
             var dto = new ClientPastSalesDto();
-            dto.setId(sale.getId());
+            dto.setId(saleCab.getId());
             dto.setProducts(products);
 
             return dto;
