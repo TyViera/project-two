@@ -46,6 +46,7 @@ public class ClientController {
 
     @GetMapping("{id}/sales")
     public ResponseEntity<List<ClientPastSalesDto>> getClientSales(@PathVariable String id) {
+        // TODO auth
         try {
             var sales = clientService.getClientSales(id);
             return ResponseEntity.ok(sales);
