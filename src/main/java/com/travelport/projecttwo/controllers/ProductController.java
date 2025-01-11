@@ -3,6 +3,7 @@ package com.travelport.projecttwo.controllers;
 import com.travelport.projecttwo.controllers.dtos.product.ProductRequestDto;
 import com.travelport.projecttwo.controllers.dtos.product.ProductResponseDto;
 import com.travelport.projecttwo.controllers.mappings.ProductMappings;
+import com.travelport.projecttwo.exceptions.ProductHasSalesException;
 import com.travelport.projecttwo.services.IProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -64,11 +65,12 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
-        // TODO return 422 if product has sold previously (exists a sales in the system for this product)
         try {
             productService.deleteProduct(id);
             return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+        } catch(ProductHasSalesException e){
+            return ResponseEntity.unprocessableEntity().build();
+        }catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }

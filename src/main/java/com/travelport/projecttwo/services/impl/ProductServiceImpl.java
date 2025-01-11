@@ -1,6 +1,8 @@
 package com.travelport.projecttwo.services.impl;
 
+import com.travelport.projecttwo.exceptions.ProductHasSalesException;
 import com.travelport.projecttwo.repository.IProductRepository;
+import com.travelport.projecttwo.repository.ISalesDetRepository;
 import com.travelport.projecttwo.repository.entities.ProductEntity;
 import com.travelport.projecttwo.services.IProductService;
 import com.travelport.projecttwo.services.domainModels.ProductDomain;
@@ -16,9 +18,11 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements IProductService {
 
     private final IProductRepository productRepository;
+    private final ISalesDetRepository salesDetRepository;
 
-    public ProductServiceImpl(IProductRepository productRepository) {
+    public ProductServiceImpl(IProductRepository productRepository, ISalesDetRepository salesDetRepository) {
         this.productRepository = productRepository;
+        this.salesDetRepository = salesDetRepository;
     }
 
     @Override
@@ -63,6 +67,13 @@ public class ProductServiceImpl implements IProductService {
         if (productEntity.isEmpty()) {
             throw new IllegalArgumentException("Product not found");
         }
+
+        var productHasSales = salesDetRepository.existsByIdProductId(productEntity.get().getId());
+
+        if (productHasSales) {
+            throw new ProductHasSalesException("Product has sales");
+        }
+
         productRepository.delete(productEntity.get());
     }
 }

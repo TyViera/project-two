@@ -20,4 +20,6 @@ public interface ISalesDetRepository extends JpaRepository<SaleDetEntity, SalesD
         LIMIT 5
     """, nativeQuery = true)
     List<Object[]> findMostSoldProducts();
+
+    boolean existsByIdProductId(String productId);
 }
