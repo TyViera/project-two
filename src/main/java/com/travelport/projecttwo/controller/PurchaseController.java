@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController//TODO: maybe this could be only @Controller
-@RequestMapping("/purchase")
+@RequestMapping("/purchases")
 public class PurchaseController {
     private final PurchaseService purchaseService;
 
@@ -24,7 +24,7 @@ public class PurchaseController {
             purchaseService.renewStock(purchaseRequest);
             return new ResponseEntity<>("Product successfully purchased", HttpStatus.CREATED);
         }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Purchase was not made", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }
