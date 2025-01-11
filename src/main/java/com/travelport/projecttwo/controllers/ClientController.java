@@ -4,6 +4,7 @@ import com.travelport.projecttwo.controllers.dtos.past_sales.ClientPastSalesDto;
 import com.travelport.projecttwo.controllers.dtos.client.ClientRequestDto;
 import com.travelport.projecttwo.controllers.dtos.client.ClientResponseDto;
 import com.travelport.projecttwo.controllers.mappings.ClientMappings;
+import com.travelport.projecttwo.exceptions.ClientHasSalesException;
 import com.travelport.projecttwo.services.IClientService;
 import com.travelport.projecttwo.services.domainModels.ClientDomain;
 import org.springframework.http.ResponseEntity;
@@ -77,12 +78,13 @@ public class ClientController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable String id) {
-        // TODO return 422 if client has orders (sales in the system)
         try{
             clientService.deleteClient(id);
-        } catch (IllegalArgumentException e) {
+            return ResponseEntity.noContent().build();
+        } catch (ClientHasSalesException e){
+            return ResponseEntity.unprocessableEntity().build();
+        }catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.noContent().build();
     }
 }

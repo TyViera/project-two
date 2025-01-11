@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ISalesCabRepository extends JpaRepository<SaleCabEntity, String> {
 
-    // Forma 1: si no mapeas la relación con "product" dentro de SalesDetEntity
     @Query("""
         SELECT DISTINCT sc
         FROM SaleCabEntity sc
@@ -17,4 +16,6 @@ public interface ISalesCabRepository extends JpaRepository<SaleCabEntity, String
         WHERE sc.clientId = :clientId
     """)
     List<SaleCabEntity> findAllByClientId(@Param("clientId") String clientId);
+
+    boolean existsByClientId(String clientId);
 }

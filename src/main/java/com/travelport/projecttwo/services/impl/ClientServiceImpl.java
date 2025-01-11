@@ -3,6 +3,7 @@ package com.travelport.projecttwo.services.impl;
 import com.travelport.projecttwo.controllers.dtos.past_sales.ClientPastSalesDto;
 import com.travelport.projecttwo.controllers.dtos.past_sales.ProductInPastSalesDto;
 import com.travelport.projecttwo.controllers.dtos.past_sales.ProductsBoughtByClientDto;
+import com.travelport.projecttwo.exceptions.ClientHasSalesException;
 import com.travelport.projecttwo.repository.IClientRepository;
 import com.travelport.projecttwo.repository.IProductRepository;
 import com.travelport.projecttwo.repository.ISalesCabRepository;
@@ -73,6 +74,13 @@ public class ClientServiceImpl implements IClientService {
         if (findClient.isEmpty()) {
             throw new IllegalArgumentException("Client not found");
         }
+
+        var existsSales = salesCabRepository.existsByClientId(id);
+
+        if (existsSales) {
+            throw new ClientHasSalesException("Client has existing sales");
+        }
+
         clientRepository.delete(findClient.get());
     }
 
