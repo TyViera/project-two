@@ -1,20 +1,17 @@
 package com.travelport.projecttwo.controller;
 
+import com.travelport.projecttwo.dto.SaleResponse;
 import com.travelport.projecttwo.entities.Client;
 import com.travelport.projecttwo.service.ClientService;
-import io.swagger.v3.oas.annotations.Operation;
+import com.travelport.projecttwo.service.SaleService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController//TODO: maybe this could be only @Controller
 @RequestMapping("/clients")
@@ -22,9 +19,11 @@ public class ClientController {
 
     // TODO: catch errors from the service layer and transform them into http responses
     private final ClientService clientService;
+    private final SaleService saleService;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, SaleService saleService) {
         this.clientService = clientService;
+        this.saleService=saleService;
     }
 
     @GetMapping
@@ -38,7 +37,7 @@ public class ClientController {
         try{
             client = clientService.getClientById(id);
 
-        }catch(NoSuchElementException e) {
+        }catch(EntityNotFoundException e) {
             return new ResponseEntity<>(
                     "Client not found",
                     HttpStatus.NOT_FOUND
@@ -51,7 +50,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> postClient(@RequestBody Client client){ // TODO: not working
+    public ResponseEntity<Object> postClient(@RequestBody Client client){
         try {
             Client newClient=clientService.addClient(client);
             return new ResponseEntity<>(
@@ -69,12 +68,12 @@ public class ClientController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateClientById(@PathVariable("id") String id, @RequestBody Client client){
         try {
-            var clientUpdated=clientService.updateClient(id, client);
+            Client clientUpdated=clientService.updateClient(id, client);
             return new ResponseEntity<>(
                     clientUpdated,
                     HttpStatus.OK
             );
-        }catch(NoSuchElementException e){
+        }catch(EntityNotFoundException e){
             return new ResponseEntity<>(
                     "Client not found",
                     HttpStatus.NOT_FOUND
@@ -83,8 +82,24 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Client> deleteClientById(@PathVariable("id") String id){
-        clientService.deleteClient(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteClientById(@PathVariable("id") String id){
+        try{
+            clientService.deleteClient(id);
+            return new ResponseEntity<>("Operation successful", HttpStatus.OK);
+        }catch(EntityNotFoundException e){
+            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>("Sales in the system", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @GetMapping("/{id}/sales")
+    public ResponseEntity<Object> getClientSales(@PathVariable("id") String id){
+        try{
+            List<SaleResponse> sales =saleService.getSalesByClientId(id);
+            return new ResponseEntity<>(sales, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }

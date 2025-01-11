@@ -1,13 +1,14 @@
-package com.travelport.projecttwo.service;
+package com.travelport.projecttwo.service.impl;
 
 import com.travelport.projecttwo.entities.Client;
 import com.travelport.projecttwo.repository.ClientRepository;
+import com.travelport.projecttwo.repository.SaleRepository;
+import com.travelport.projecttwo.service.ClientService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,10 +16,12 @@ import java.util.UUID;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final SaleRepository saleRepository;
 
     @Autowired //TODO: check if this is always necesary
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, SaleRepository saleRepository) {
         this.clientRepository = clientRepository;
+        this.saleRepository = saleRepository;
     }
 
     @Override
@@ -29,22 +32,20 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client getClientById(String id) {
         Optional<Client> client = clientRepository.findById(id);
-        if (client.isEmpty()) throw new NoSuchElementException("Client not found");
+        if (client.isEmpty()) throw new EntityNotFoundException("Client not found");
         return client.get();
     }
 
     @Override
-    public void deleteClient(String id) { // TODO: check if i can return an error - when should errors be generated?
+    public void deleteClient(String id) {
+        if(clientRepository.findById(id).isEmpty()) throw new EntityNotFoundException("Client not found");
+        if(!saleRepository.getSalesIdByClientId(id).isEmpty()) throw new IllegalArgumentException("Client has orders in system");
         clientRepository.deleteById(id);
     }
 
     @Override
     public Client addClient(Client client) {
-        Client newClient = new Client();
-        newClient.setId(UUID.randomUUID().toString());
-        newClient.setName(client.getName());
-        newClient.setAddress(client.getAddress());
-        newClient.setNif(client.getNif());
+        Client newClient = new Client(UUID.randomUUID().toString() , client.getNif(), client.getName(), client.getAddress());
         return clientRepository.save(newClient);
     }
 

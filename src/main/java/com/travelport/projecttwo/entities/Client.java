@@ -25,6 +25,15 @@ public class Client {
     @Size(min=10, max = 255)
     private String address;
 
+    public Client(){}
+
+    public Client(String id, String nif, String name, String address){
+        this.id=id;
+        this.nif=nif;
+        this.name=name;
+        this.address=address;
+    }
+
     public String getId() {
         return id;
     }
