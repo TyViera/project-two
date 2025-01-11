@@ -3,28 +3,18 @@ package com.travelport.projecttwo.controllers.dtos.purchase;
 import com.travelport.projecttwo.controllers.dtos.product.ProductSaleDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
-public class PurchaseRequestDto {
+import java.util.List;
 
-    @NotNull
-    private ProductSaleDto product;
+public class PurchaseRequestDto {
 
     @NotBlank
     @Length(min = 2, max = 50)
     private String supplier;
 
-    @Positive
-    private int quantity;
-
-    public ProductSaleDto getProduct() {
-        return product;
-    }
-
-    public void setProduct(ProductSaleDto product) {
-        this.product = product;
-    }
+    @NotNull
+    private List<ProductSaleDto> products;
 
     public String getSupplier() {
         return supplier;
@@ -34,11 +24,11 @@ public class PurchaseRequestDto {
         this.supplier = supplier;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<ProductSaleDto> getProducts() {
+        return products;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setProducts(List<ProductSaleDto> products) {
+        this.products = products;
     }
 }

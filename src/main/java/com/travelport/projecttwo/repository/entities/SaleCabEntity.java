@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "sales_cab")
@@ -47,5 +48,16 @@ public class SaleCabEntity {
 
     public void setDetails(List<SaleDetEntity> details) {
         this.details = details;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof SaleCabEntity cabEntity)) return false;
+        return Objects.equals(id, cabEntity.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
