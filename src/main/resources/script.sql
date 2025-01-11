@@ -20,7 +20,6 @@ CREATE TABLE `products` (
 CREATE TABLE `sales` (
      id VARCHAR(36) PRIMARY KEY,
      client_id VARCHAR(36) NOT NULL,
-     sell_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );
 
@@ -57,17 +56,17 @@ INSERT INTO `products` (`id`, `name`, `code`, `stock`) VALUES
 (UUID(), 'External Hard Drive', 'EH9001', 15),
 (UUID(), 'USB-C Hub', 'UC10001', 25);
 
-INSERT INTO `sales` (`id`, `client_id`, `sell_date`) VALUES
-(UUID(), (SELECT id FROM clients WHERE nif = '12345678A'), '2023-01-15 10:30:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '23456789B'), '2023-01-20 15:45:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '34567890C'), '2023-02-10 12:15:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '45678901D'), '2023-02-15 09:00:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '56789012E'), '2023-03-01 17:30:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '67890123F'), '2023-03-10 11:25:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '78901234G'), '2023-04-05 16:40:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '89012345H'), '2023-04-20 10:50:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '90123456I'), '2023-05-01 14:30:00'),
-(UUID(), (SELECT id FROM clients WHERE nif = '01234567J'), '2023-05-15 13:20:00');
+INSERT INTO `sales` (`id`, `client_id`) VALUES
+(UUID(), (SELECT id FROM clients WHERE nif = '12345678A')),
+(UUID(), (SELECT id FROM clients WHERE nif = '23456789B')),
+(UUID(), (SELECT id FROM clients WHERE nif = '34567890C')),
+(UUID(), (SELECT id FROM clients WHERE nif = '45678901D')),
+(UUID(), (SELECT id FROM clients WHERE nif = '56789012E')),
+(UUID(), (SELECT id FROM clients WHERE nif = '67890123F')),
+(UUID(), (SELECT id FROM clients WHERE nif = '78901234G')),
+(UUID(), (SELECT id FROM clients WHERE nif = '89012345H')),
+(UUID(), (SELECT id FROM clients WHERE nif = '90123456I')),
+(UUID(), (SELECT id FROM clients WHERE nif = '01234567J'));
 
 INSERT INTO `sales_det` (`sale_id`, `product_id`, `quantity`) VALUES
 ((SELECT id FROM sales LIMIT 1 OFFSET 0), (SELECT id FROM products WHERE code = 'LP1001'), 1),
