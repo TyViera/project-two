@@ -12,7 +12,7 @@ public interface ISalesDetRepository extends JpaRepository<SaleDetEntity, SalesD
     @Query(value = """
         SELECT p.id, 
                p.name, 
-               SUM(sd.quantity) as quantity,
+               SUM(sd.quantity) as quantity
         FROM sales_det sd
         JOIN products p ON p.id = sd.product_id
         GROUP BY p.id, p.name
