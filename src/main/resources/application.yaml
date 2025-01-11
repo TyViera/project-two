@@ -1,3 +1,18 @@
 spring:
   application:
     name: project-two
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+  security:
+    username: ${SECURITY_USERNAME}
+    password: ${SECURITY_PASSWORD}
+    userRole: ADMIN
+    regularUserRole: USER
