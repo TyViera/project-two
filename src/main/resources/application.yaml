@@ -1,9 +1,1 @@
-spring:
-  application:
-    name: project-two
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/store2Db
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: password
