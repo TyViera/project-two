@@ -1,5 +1,6 @@
 package com.travelport.projecttwo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "products")
 public class Product {
-//TODO: add min and max length to fields
     @Id
     @Column(name = "id", nullable = false, length = 36)
     private String id;
@@ -24,7 +24,16 @@ public class Product {
     private String code;
 
     @Column(name = "stock", nullable = false)
+    @JsonIgnore
     private Integer stock = 0;
+
+    public Product(){}
+
+    public Product(String id, String name, String code){
+        this.id=id;
+        this.name=name;
+        this.code=code;
+    }
 
     public String getId() {
         return id;
