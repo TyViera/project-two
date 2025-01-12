@@ -1,27 +1,24 @@
 package com.travelport.projecttwo.requests;
 
 import java.util.List;
-import java.util.UUID;
-
-import com.travelport.projecttwo.entities.ProductSale;
 
 public class SaleRequest {
-  private UUID clientId;
-  private List<ProductSale> productSales;
+  private ClientRequest client;
+  private List<ProductSaleRequest> products;
 
-  public UUID getClientId() {
-    return clientId;
+  public ClientRequest getClient() {
+    return client;
   }
 
-  public void setClientId(UUID clientId) {
-    this.clientId = clientId;
+  public void setClient(ClientRequest client) {
+    this.client = client;
   }
 
-  public List<ProductSale> getProductSales() {
-    return productSales;
+  public List<ProductSaleRequest> getProducts() {
+    return products;
   }
 
-  public void setProductSales(List<ProductSale> productSales) {
-    this.productSales = productSales;
+  public void setProducts(List<ProductSaleRequest> products) {
+    this.products = products;
   }
 }

@@ -36,6 +36,7 @@ public class PurchaseServiceImpl implements PurchaseService {
       ProductStock productStock = productStockRepository.findByProductId(productPurchase.getProduct().getId())
           .orElse(new ProductStock());
 
+      productStock.setProduct(product);
       productStock.setQuantity(productStock.getQuantity() + productPurchase.getQuantity());
       productStockRepository.save(productStock);
 

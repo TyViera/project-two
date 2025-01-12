@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface SaleRepository extends JpaRepository<Sale, UUID> {
   List<Sale> findByClientId(UUID clientId);
+  boolean existsByClientId(UUID clientId);
 }

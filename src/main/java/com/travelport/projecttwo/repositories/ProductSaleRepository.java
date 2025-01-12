@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductSaleRepository extends JpaRepository<ProductSale, UUID> {
-  List<ProductSale> findBySaleId(UUID saleId);
-  @Query("SELECT ps FROM ProductSale ps ORDER BY ps.quantity DESC")
-  public List<ProductSale> findTop5();
 
+  @Query("SELECT ps FROM ProductSale ps GROUP BY ps.product ORDER BY SUM(ps.quantity) DESC")
+  List<ProductSale> findTop5();
 }
