@@ -40,6 +40,12 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductDomain createProduct(ProductDomain productDomain) {
+        var productExists = productRepository.existsByCode(productDomain.getCode());
+
+        if (productExists) {
+            throw new IllegalArgumentException("Product already exists");
+        }
+
         productDomain.setId(UUID.randomUUID().toString());
         productDomain.setStock(0);
         var productEntity = productRepository.save(ProductMappings.toEntity(productDomain));

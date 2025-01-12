@@ -55,15 +55,15 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientResponseDto> postClient(@Validated @RequestBody ClientRequestDto clientRequest) {
-        var clientDomain = ClientMappings.toDomain(clientRequest);
-
-        clientDomain.setId(UUID.randomUUID().toString());
-
-        var savedClient = clientService.createClient(clientDomain);
-
-        URI location = URI.create("/clients/" + savedClient.getId());
-
-        return ResponseEntity.created(location).body(ClientMappings.toDto(savedClient));
+        try{
+            var clientDomain = ClientMappings.toDomain(clientRequest);
+            clientDomain.setId(UUID.randomUUID().toString());
+            var savedClient = clientService.createClient(clientDomain);
+            URI location = URI.create("/clients/" + savedClient.getId());
+            return ResponseEntity.created(location).body(ClientMappings.toDto(savedClient));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("{id}")

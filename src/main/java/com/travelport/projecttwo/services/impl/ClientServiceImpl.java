@@ -51,6 +51,10 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDomain createClient(ClientDomain clientDomain) {
+        var clientAlreadyExists = clientRepository.existsByNif(clientDomain.getNif());
+        if (clientAlreadyExists) {
+            throw new IllegalArgumentException("Client already exists");
+        }
         clientRepository.save(ClientMappings.toEntity(clientDomain));
         return clientDomain;
     }
