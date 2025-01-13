@@ -1,0 +1,426 @@
+openapi: 3.0.0
+info:
+  title: Sales System API
+  description: API Documentation for client, product, and sales management.
+  version: 1.0.0
+paths:
+  /clients:
+    get:
+      tags:
+        - Clients
+      summary: Get all clients
+      operationId: getAllClients
+      responses:
+        "200":
+          description: A list of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      tags:
+        - Clients
+      summary: Create a new client
+      operationId: createClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        "201":
+          description: Client created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+  /clients/{id}:
+    get:
+      tags:
+        - Clients
+      summary: Get client by ID
+      operationId: getClientById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Client details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        "404":
+          description: Client not found
+    put:
+      tags:
+        - Clients
+      summary: Update client by ID
+      operationId: updateClientById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        "200":
+          description: Client updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        "404":
+          description: Client not found
+    delete:
+      tags:
+        - Clients
+      summary: Delete client by ID
+      operationId: deleteClientById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Client deleted successfully
+        "404":
+          description: Client not found
+        "422":
+          description: Client has orders; deletion not allowed
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get all products
+      operationId: getAllProducts
+      responses:
+        "200":
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - Products
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "201":
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "422":
+          description: Product code conflicts
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get product by ID
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: Product not found
+    put:
+      tags:
+        - Products
+      summary: Update a product by id
+      operationId: updateProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: Product not found
+        "422":
+          description: Product has sold previously
+    delete:
+      tags:
+        - Products
+      summary: Delete product by ID
+      operationId: deleteProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Product deleted successfully
+        "404":
+          description: Product not found
+        "422":
+          description: Product cannot be deleted due to related sales
+  /sales:
+    post:
+      tags:
+        - Sales
+      summary: Sell a product
+      operationId: sellProduct
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sales'
+      responses:
+        "201":
+          description: Sale completed successfully
+  /purchases:
+    post:
+      tags:
+        - Purchases
+      summary: Purchase a product
+      operationId: purchaseProduct
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Purchases'
+      responses:
+        "201":
+          description: Purchase completed successfully
+  /clients/{id}/sales:
+    get:
+      tags:
+        - Past Sales
+      summary: "See past sales"
+      description: "Retrieve a list of past sales for a client."
+      operationId: "getPastSales"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "Client ID"
+          schema:
+            type: string
+      security:
+        - basicAuth: []  # Basic authentication required
+      responses:
+        '200':
+          description: "A list of past sales for the client."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PastSales'
+  /sales/most-sold-products:
+    get:
+      tags:
+        - Most Sold Products
+      summary: "Get 5 most sold products"
+      description: "See income report - 5 most sold products"
+      operationId: "getMostSoldProducts"
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: "A list of the 5 most sold products."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: "Product ID"
+                        name:
+                          type: string
+                          description: "Product name"
+                    quantity:
+                      type: integer
+                      format: int32
+                      description: "Total quantity sold for the product"
+                  required:
+                    - product
+                    - quantity
+  /products/{id}/stock:
+    get:
+      tags:
+        - Stock
+      summary: "See stock"
+      description: "Retrieve the stock of a specific product by its ID."
+      operationId: "getProductStock"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "Product ID"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "The current stock of the product."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stock:
+                    type: integer
+                    description: "The product stock quantity"
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 2
+          maxLength: 150
+        nif:
+          type: string
+          minLength: 9
+          maxLength: 10
+        address:
+          type: string
+          nullable: true
+          minLength: 5
+          maxLength: 150
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        code:
+          type: string
+          minLength: 5
+          maxLength: 10
+    Sales:
+      type: object
+      properties:
+        product:
+          type: object
+          properties:
+            id:
+              type: string
+        client:
+          type: object
+          properties:
+            id:
+              type: string
+        quantity:
+          type: integer
+          minimum: 1
+    Purchases:
+      type: object
+      properties:
+        product:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "Product ID"
+        supplier:
+          type: string
+          description: "Supplier name"
+        quantity:
+          type: integer
+          format: int32
+          description: "Positive integer quantity"
+      required:
+        - product
+        - supplier
+        - quantity
+    PastSales:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: "Sale ID"
+          products:
+            type: array
+            items:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: "Product ID"
+                    name:
+                      type: string
+                      description: "Product name"
+                quantity:
+                  type: integer
+                  format: int32
+                  description: "Sale quantity"
+              required:
+                - product
+                - quantity
+        required:
+          - id
+          - products
