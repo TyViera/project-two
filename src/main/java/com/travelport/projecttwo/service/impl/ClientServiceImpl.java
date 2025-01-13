@@ -18,7 +18,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final SaleRepository saleRepository;
 
-    @Autowired //TODO: check if this is always necesary
+    @Autowired
     public ClientServiceImpl(ClientRepository clientRepository, SaleRepository saleRepository) {
         this.clientRepository = clientRepository;
         this.saleRepository = saleRepository;

@@ -22,7 +22,7 @@ public class Client {
     private String name;
 
     @Column(name = "address", nullable = true, length = 255)
-    @Size(min=10, max = 255)
+    @Size(min=10, max = 150)
     private String address;
 
     public Client(){}

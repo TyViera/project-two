@@ -1,9 +1,11 @@
 package com.travelport.projecttwo.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Schema
 @Table(name = "sales")
 public class Sale {
 

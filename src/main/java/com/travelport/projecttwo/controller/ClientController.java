@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @Tag(name = "Clients")
-@RestController//TODO: maybe this could be only @Controller
+@RestController
 @RequestMapping("/clients")
 public class ClientController {
 
@@ -32,9 +33,9 @@ public class ClientController {
 
     @Operation(summary = "Get clients", description = "Returns all clients")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved",
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved clients",
                     content = @Content(
-                            schema = @Schema(implementation = Client.class))), //TODO: hacer que retorne un array de Clients en la documentacion
+                            schema = @Schema(type = "array", implementation = Client.class))) // List of Clients
     })
     @GetMapping
     public ResponseEntity<List<Client>> getClients() {
@@ -45,7 +46,7 @@ public class ClientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operation successful", content = @Content(
                     schema = @Schema(implementation = Client.class))),
-            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content())
+            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content()) // No content for 404
     })
    @GetMapping("/{id}")
     public ResponseEntity<Object> findById( @Parameter(name = "id") @PathVariable("id") String id){
@@ -65,10 +66,11 @@ public class ClientController {
         );
     }
 
-    @Operation(summary = "Add client", description = "Adds client given its data")
+    @Operation(summary = "Add client", description = "Adds a new client given its data")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operation successful"),
-            @ApiResponse(responseCode = "406", description = "Client not found")
+            @ApiResponse(responseCode = "201", description = "Client created successfully", content = @Content(
+                    schema = @Schema(implementation = Client.class))),
+            @ApiResponse(responseCode = "406", description = "Client could not be saved", content = @Content())
     })
     @PostMapping
     public ResponseEntity<Object> postClient(@RequestBody Client client){
@@ -86,10 +88,11 @@ public class ClientController {
         }
     }
 
-    @Operation(summary = "Update client", description = "Updates client by id")
+    @Operation(summary = "Update client", description = "Updates a client's information by their ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operation successful"),
-            @ApiResponse(responseCode = "404", description = "Client not found")
+            @ApiResponse(responseCode = "200", description = "Client updated successfully", content = @Content(
+                    schema = @Schema(implementation = Client.class))),
+            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content())
     })
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateClientById(@PathVariable("id") String id, @RequestBody Client client){
@@ -107,12 +110,11 @@ public class ClientController {
         }
     }
 
-    @Operation(summary = "Delete client", description = "Deletes client by id")
+    @Operation(summary = "Delete client", description = "Deletes a client by their ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operation successful"),
-            @ApiResponse(responseCode = "404", description = "Client not found"),
-            @ApiResponse(responseCode = "422", description = "Sales in the system")
-
+            @ApiResponse(responseCode = "200", description = "Client deleted successfully", content = @Content()),
+            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content()),
+            @ApiResponse(responseCode = "422", description = "Client has sales in the system and cannot be deleted", content = @Content())
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteClientById(@PathVariable("id") String id){
@@ -126,12 +128,13 @@ public class ClientController {
         }
     }
 
-    @Operation(summary = "Get client sales", description = "Gets sales from client by id")
+    @Operation(summary = "Get client sales", description = "Retrieves all sales associated with a client by their ID",  security = @SecurityRequirement(name = "basicAuth"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operation successful"),
-            @ApiResponse(responseCode = "404", description = "Client not found")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved client sales", content = @Content(
+                    schema = @Schema(type = "array", implementation = SaleResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content())
     })
-    @GetMapping("/{id}/sales") //TODO: comprobar que estos sean lo errores que retorna
+    @GetMapping("/{id}/sales")
     public ResponseEntity<Object> getClientSales(@PathVariable("id") String id){
         try{
             List<SaleResponse> sales =saleService.getSalesByClientId(id);

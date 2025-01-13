@@ -107,7 +107,6 @@ class SaleServiceImplTest {
 
     @Test
     void getSalesByClientId() {
-        // Mock sale details and product
         SaleDetail saleDetail = new SaleDetail("saleId", "productId1", 2, product, sale);
         List<SaleDetail> saleDetails = Collections.singletonList(saleDetail);
 

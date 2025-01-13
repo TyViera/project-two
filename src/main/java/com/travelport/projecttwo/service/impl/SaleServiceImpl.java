@@ -28,7 +28,7 @@ public class SaleServiceImpl implements SaleService {
     private final ProductRepository productRepository;
     private final SaleDetailRepository saleDetailRepository;
 
-    @Autowired //TODO: check if this is always necessary
+    @Autowired
     public SaleServiceImpl(ClientRepository clientRepository, SaleRepository saleRepository, ProductRepository productRepository, SaleDetailRepository saleDetailRepository) {
         this.clientRepository = clientRepository;
         this.saleRepository=saleRepository;
@@ -38,7 +38,6 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public List<ProductReportResponse> getMostSoldProducts() {
-        //TODO: maybe change this to ProductService(? and refactor
         List<Object[]> results = productRepository.getMostSoldProducts();
         List<ProductReportResponse> responseList = results.stream()
                 .map(result -> new ProductReportResponse(

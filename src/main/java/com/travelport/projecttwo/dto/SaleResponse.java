@@ -2,10 +2,12 @@ package com.travelport.projecttwo.dto;
 
 import com.travelport.projecttwo.entities.Product;
 import com.travelport.projecttwo.entities.SaleDetail;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Schema
 public class SaleResponse {
     private String id;
     private List<ProductDetail> products;

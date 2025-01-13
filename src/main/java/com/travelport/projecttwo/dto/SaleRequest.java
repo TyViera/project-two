@@ -1,7 +1,10 @@
 package com.travelport.projecttwo.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
+@Schema
 public class SaleRequest {
     private ClientRequest client;
     private List<ProductRequest> products;

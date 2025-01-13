@@ -1,15 +1,16 @@
 package com.travelport.projecttwo.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Schema
 @IdClass(SaleDetail.SaleDetailPK.class)
 @Table(name = "sales_det")
 public class SaleDetail {
-//TODO: change this to match the required min and max length, and types
     @Id
     @Column(name = "sale_id", nullable = false)
     private String saleId;
