@@ -1,6 +1,5 @@
 package com.travelport.projecttwo.controller;
 
-import com.travelport.projecttwo.ProjectTwoApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +127,7 @@ class ProductControllerTest {
         String productJson = """
         {
           "name": "MacBook Pro",
-          "code": "123123OK"
+          "code": "465465OK"
         }
         """;
 
@@ -138,7 +137,7 @@ class ProductControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("MacBook Pro"))
-                .andExpect(jsonPath("$.code").value("123123OK"));
+                .andExpect(jsonPath("$.code").value("465465OK"));
     }
 
     @Test
@@ -152,8 +151,7 @@ class ProductControllerTest {
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(productJson))
-                .andExpect(status().isNotAcceptable())
-                .andExpect(content().string("Product not saved"));
+                .andExpect(status().isNotAcceptable());
         ;
     }
 

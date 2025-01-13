@@ -2,7 +2,6 @@ package com.travelport.projecttwo.service.impl;
 
 import com.travelport.projecttwo.entities.Product;
 import com.travelport.projecttwo.repository.ProductRepository;
-import com.travelport.projecttwo.repository.SaleDetailRepository;
 import com.travelport.projecttwo.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,10 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final SaleDetailRepository saleDetailRepository;
 
     @Autowired //TODO: check if this is always necesary
-    public ProductServiceImpl(ProductRepository productRepository, SaleDetailRepository saleDetailRepository) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.saleDetailRepository=saleDetailRepository;
     }
 
     @Override

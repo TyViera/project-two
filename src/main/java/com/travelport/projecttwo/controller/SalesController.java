@@ -3,12 +3,14 @@ package com.travelport.projecttwo.controller;
 import com.travelport.projecttwo.dto.ProductReportResponse;
 import com.travelport.projecttwo.dto.SaleRequest;
 import com.travelport.projecttwo.service.SaleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Sales")
 @RestController//TODO: maybe this could be only @Controller
 @RequestMapping("/sales")
 public class SalesController {

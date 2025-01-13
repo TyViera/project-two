@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -18,9 +19,11 @@ public class Product {
     private String id;
 
     @Column(name = "name", nullable = false, length = 100)
+    @Size(min=2, max=100)
     private String name;
 
     @Column(name = "code", nullable = false, length = 10, unique = true)
+    @Size(min=5, max=10)
     private String code;
 
     @Column(name = "stock", nullable = false)

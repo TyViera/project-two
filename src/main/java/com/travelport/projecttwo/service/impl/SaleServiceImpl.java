@@ -51,7 +51,6 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    @Transactional
     public void addSale(SaleRequest saleRequest) {
         SaleRequest.ClientRequest clientRequested= saleRequest.getClient();
         String clientId = clientRequested.getId();
@@ -66,7 +65,7 @@ public class SaleServiceImpl implements SaleService {
             Product fProduct = productRepository.findById(p.getId())
                     .orElseThrow(() -> new NoSuchElementException("Product not found"));
 
-            if(p.getQuantity()>fProduct.getStock() && fProduct.getStock()>0) throw new IllegalArgumentException("Requested stock not available for " + p.getId());
+            if(p.getQuantity()>fProduct.getStock() && fProduct.getStock()>0) throw new IllegalArgumentException("Requested stock not available");
 
             fProduct.setStock(fProduct.getStock()-p.getQuantity());
             productRepository.save(fProduct);
@@ -84,7 +83,7 @@ public class SaleServiceImpl implements SaleService {
         }
 
         for (String saleId : salesId) {
-            List<Product> products = new ArrayList<>(); // Inicializar la lista de productos
+            List<Product> products = new ArrayList<>();
             List<SaleDetail> saleDetails = saleDetailRepository.findBySaleId(saleId);
             if (saleDetails.isEmpty()) {
                 throw new NoSuchElementException("No sale details found for sale ID: " + saleId);

@@ -4,6 +4,7 @@ import com.travelport.projecttwo.entities.Product;
 import com.travelport.projecttwo.service.ProductService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Products")
 @RestController//TODO: maybe this could be only @Controller
 @RequestMapping("/products")
 public class ProductController {
@@ -22,7 +24,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getClients() {
+    public ResponseEntity<List<Product>> getProducts() {
         return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
     }
 
@@ -82,7 +84,7 @@ public class ProductController {
             productService.deleteProduct(id);
             return new ResponseEntity<>("Operation successful", HttpStatus.ACCEPTED);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>("Product not found ", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }catch(IllegalArgumentException e){
             return new ResponseEntity<>("Exists a sales in the system for this product", HttpStatus.UNPROCESSABLE_ENTITY);
         }catch (Exception e) {
