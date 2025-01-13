@@ -1,6 +1,5 @@
 package com.travelport.projecttwo.controller;
 
-import com.travelport.projecttwo.ProjectTwoApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

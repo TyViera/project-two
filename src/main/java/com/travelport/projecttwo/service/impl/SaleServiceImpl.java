@@ -12,7 +12,6 @@ import com.travelport.projecttwo.repository.ProductRepository;
 import com.travelport.projecttwo.repository.SaleDetailRepository;
 import com.travelport.projecttwo.repository.SaleRepository;
 import com.travelport.projecttwo.service.SaleService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
