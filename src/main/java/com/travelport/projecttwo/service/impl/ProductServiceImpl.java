@@ -3,6 +3,7 @@ package com.travelport.projecttwo.service.impl;
 import com.travelport.projecttwo.controller.model.ProductRequest;
 import com.travelport.projecttwo.exception.DeletingProductException;
 import com.travelport.projecttwo.exception.DuplicatedCodeException;
+import com.travelport.projecttwo.repository.SaleDetailRepository;
 import com.travelport.projecttwo.repository.entity.ProductEntity;
 import com.travelport.projecttwo.repository.ProductRepository;
 import com.travelport.projecttwo.service.ProductService;
@@ -19,9 +20,11 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
+  private final SaleDetailRepository saleDetailRepository;
 
-  public ProductServiceImpl(ProductRepository productRepository) {
+  public ProductServiceImpl(ProductRepository productRepository,SaleDetailRepository saleDetailRepository) {
     this.productRepository = productRepository;
+    this.saleDetailRepository = saleDetailRepository;
   }
 
   @Override
@@ -82,14 +85,11 @@ public class ProductServiceImpl implements ProductService {
     var isProductExists = productRepository.existsById(id);
     if (!isProductExists) return false;
 
-    // TODO: Refactor to check manually if product has been sold previously, instead of relying on exception
-    try {
-      productRepository.deleteById(id);
-      return true;
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
+    if (!saleDetailRepository.findByProductId(id).isEmpty())
       throw new DeletingProductException("Product has been sold previously, cannot be deleted");
-    }
+
+    productRepository.deleteById(id);
+    return true;
   }
 
   @Override

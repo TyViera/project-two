@@ -18,4 +18,6 @@ public interface SaleDetailRepository extends JpaRepository<SaleDetailEntity, St
   @Query("SELECT SUM(s.quantity) FROM SaleDetailEntity s WHERE s.product.id = :productId")
   public Integer getTimesSoldById (@Param("productId") String productId);
 
+  @Query("SELECT s.product FROM SaleDetailEntity s WHERE s.product.id = :productId")
+  public List<ProductEntity> findByProductId (String productId);
 }
