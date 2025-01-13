@@ -22,7 +22,7 @@ public class Client {
     private String name;
 
     @NotBlank
-    @Size(min = 9, max = 150)
+    @Size(min = 9, max = 10)
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Name must be alphanumeric")
     private String nif;
 
@@ -45,11 +45,11 @@ public class Client {
         this.name = name;
     }
 
-    public @NotBlank @Size(min = 9, max = 150) @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Name must be alphanumeric") String getNif() {
+    public @NotBlank @Size(min = 9, max = 10) @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Name must be alphanumeric") String getNif() {
         return nif;
     }
 
-    public void setNif(@NotBlank @Size(min = 9, max = 150) @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Name must be alphanumeric") String nif) {
+    public void setNif(@NotBlank @Size(min = 9, max = 10) @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Name must be alphanumeric") String nif) {
         this.nif = nif;
     }
 
