@@ -1,0 +1,509 @@
+openapi: 3.1.0
+info:
+  title: Java Spring Boot - Shop API
+  description: |-
+    based on the OpenAPI 3.1 specification. 
+
+    Some useful links:
+    - [Shop API repository](https://github.com/picuu/java-shop-api-2)
+    - [API definition](https://github.com/picuu/java-shop-api-2/blob/master/src/main/resources/openapi.yaml)
+
+  contact:
+    email: carlos.capoforcada@travelport.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: clients
+    description: Operations about clients
+  - name: products
+    description: Operations about products
+  - name: sales
+    description: Operations to sell products
+  - name: purchases
+    description: Operations to purchase products (renew stock)
+paths:
+  /clients:
+    get:
+      tags:
+        - clients
+      summary: Get all clients
+      description: Get all clients in a List
+      operationId: getClients
+      responses:
+        '200':
+          description: successful operation - clients list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientOutput'
+    post:
+      tags:
+        - clients
+      summary: Create a client
+      description: ''
+      operationId: createClient
+      requestBody:
+        description: Created client object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientInput'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientOutput'
+  /clients/{id}:
+    get:
+      tags:
+        - clients
+      summary: Get client by id
+      description: 'Get one client by id'
+      operationId: getClientById
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the client'
+          required: true
+          schema:
+            $ref: '#/components/schemas/ClientId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientOutput'
+        '404':
+          description: Client not found
+    put:
+      tags:
+        - clients
+      summary: Update client
+      description: Update a client by id
+      operationId: updateClient
+      parameters:
+        - name: id
+          in: path
+          description: id that need to be updated
+          required: true
+          schema:
+            $ref: '#/components/schemas/ClientId'
+      requestBody:
+        description: Update an existent client
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientInput'
+      responses:
+        '200':
+          description: successful operation - returns the updated client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientOutput'
+        '404':
+          description: client not found
+    delete:
+      tags:
+        - clients
+      summary: Delete client
+      description: Delete a client by id
+      operationId: deleteClient
+      parameters:
+        - name: id
+          in: path
+          description: The id that needs to be deleted
+          required: true
+          schema:
+            $ref: '#/components/schemas/ClientId'
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Client not found
+        '422':
+          description: Client has orders, cannot be deleted
+  /clients/{id}/sales:
+    get:
+      tags:
+        - clients
+      summary: See past sales
+      description: This operation must be protected with basic auth.
+      operationId: getClientPastSales
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the client'
+          required: true
+          schema:
+            $ref: '#/components/schemas/ClientId'
+      responses:
+        '200':
+          description: 'list of past sales of the given client'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get all products
+      description: Get all products in a List
+      operationId: getProducts
+      responses:
+        '200':
+          description: successful operation - products list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductOutput'
+    post:
+      tags:
+        - products
+      summary: Create a product
+      description: ''
+      operationId: createProduct
+      requestBody:
+        description: Created product object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOutput'
+        '422':
+          description: There is already a product with the provided code
+  /products/{id}:
+    get:
+      tags:
+        - products
+      summary: Get product by id
+      description: 'Get one product by id'
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the product'
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOutput'
+        '404':
+          description: Product not found
+    put:
+      tags:
+        - products
+      summary: Update product
+      description: Update a product by id
+      operationId: updateProduct
+      parameters:
+        - name: id
+          in: path
+          description: product id that needs to be updated
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductId'
+      requestBody:
+        description: Update an existent product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: successful operation - returns the updated product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOutput'
+        '404':
+          description: product not found
+    delete:
+      tags:
+        - products
+      summary: Delete product
+      description: Delete a product by id
+      operationId: deleteProduct
+      parameters:
+        - name: id
+          in: path
+          description: The id that needs to be deleted
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Product not found
+        '422':
+          description: Product has been sold, cannot be deleted
+  /products/{id}/stock:
+    get:
+      tags:
+        - products
+      summary: See stock
+      description: See stock of a product by id
+      operationId: getProductStock
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the product'
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stock:
+                    type: integer
+                    examples: [0, 1, 5, 200]
+        '404':
+          description: product not found
+  /sales:
+    post:
+      tags:
+        - sales
+      summary: Sell a product
+      description: 'This operation must be protected with basic auth'
+      operationId: sellProduct
+      security:
+        - basicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SellProduct'
+      responses:
+        '201':
+          description: successful operation
+  /sales/most-sold-products:
+    get:
+      tags:
+        - sales
+      summary: See income report
+      description: |
+        See the 5 most sold products. 
+        This operation must be protected with basic auth.
+        It must include the 5 most sold products, ordered desc by quantity.
+      operationId: getMostSoldProducts
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SoldProduct'
+
+  /purchases:
+    post:
+      tags:
+        - purchases
+      summary: Purchase a product (renew stock)
+      description: 'This operation must be protected with basic auth'
+      operationId: purchaseProduct
+      security:
+        - basicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseProduct'
+      responses:
+        '201':
+          description: successful operation
+components:
+  schemas:
+    ClientId:
+      type: string
+      examples: [d56b486e-cb2e-4816-89d0-f7b080676998]
+    ClientName:
+      type: string
+      examples: [Carlos, Carlos Capó]
+      minLength: 2
+      maxLength: 150
+    ClientNif:
+      type: string
+      examples: [42853608P]
+      minLength: 9
+      maxLength: 10
+    ClientAddress:
+      type: string
+      examples: [Aiguablava 121]
+      minLength: 5
+      maxLength: 150
+    ProductId:
+      type: string
+      examples: [f97dde36-9fa2-4f7c-8c3d-93efb61fbc79]
+    ProductName:
+      type: string
+      examples: [Laptop]
+      minLength: 2
+      maxLength: 100
+    ProductCode:
+      type: string
+      examples: [25P001]
+      minLength: 5
+      maxLength: 10
+    SaleQuantity:
+      type: integer
+      examples: [3]
+      minimum: 1
+    SoldProduct:
+      type: object
+      properties:
+        product:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ProductId'
+            name:
+              $ref: '#/components/schemas/ProductName'
+        quantity:
+          $ref: '#/components/schemas/SaleQuantity'
+    ClientInput:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/ClientName'
+        nif:
+          $ref: '#/components/schemas/ClientNif'
+        address:
+          $ref: '#/components/schemas/ClientAddress'
+      required:
+        - name
+        - nif
+
+    ClientOutput:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+        name:
+          $ref: '#/components/schemas/ClientName'
+        nif:
+          $ref: '#/components/schemas/ClientNif'
+        address:
+          $ref: '#/components/schemas/ClientAddress'
+      required:
+        - id
+        - name
+        - nif
+    ProductInput:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/ProductName'
+        code:
+          $ref: '#/components/schemas/ProductCode'
+      required:
+        - name
+        - code
+    ProductOutput:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ProductId'
+        name:
+          $ref: '#/components/schemas/ProductName'
+        code:
+          $ref: '#/components/schemas/ProductCode'
+      required:
+        - id
+        - name
+        - code
+    SellProduct:
+      type: object
+      properties:
+        client:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ClientId'
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/ProductId'
+              quantity:
+                $ref: '#/components/schemas/SaleQuantity'
+      required:
+        - client
+        - products
+    PurchaseProduct:
+      type: object
+      properties:
+        supplier:
+          type: string
+          examples: [Amazon]
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/ProductId'
+              quantity:
+                $ref: '#/components/schemas/SaleQuantity'
+      required:
+        - supplier
+        - products
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+          description: the sale id
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoldProduct'
+      required:
+        - id
+        - products
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
