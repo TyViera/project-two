@@ -6,6 +6,10 @@ public class PurchaseProduct {
 
     private Integer quantity;
 
+    public PurchaseProduct(String productId, Integer quantity) {
+        this.productId = productId;
+    }
+
     public String getProductId() {
         return productId;
     }

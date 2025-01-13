@@ -1,5 +1,6 @@
 package com.travelport.projecttwo.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -7,29 +8,31 @@ import java.io.Serializable;
 @Embeddable
 public class PurchaseProductId {
 
-    private String purchase_id;
+    @Column(name = "purchase_id")
+    private String purchaseId;
 
-    private String product_id;
+    @Column(name = "product_id")
+    private String productId;
 
-    public PurchaseProductId(String purchase_id, String product_id) {
-        this.purchase_id = purchase_id;
-        this.product_id = product_id;
+    public PurchaseProductId(String purchaseId, String productId) {
+        this.purchaseId = purchaseId;
+        this.productId = productId;
     }
 
     public PurchaseProductId() {}
 
-    public String getPurchase_id() {
-        return purchase_id;
+    public String getPurchaseId() {
+        return purchaseId;
     }
-    public void setPurchase_id(String purchase_id) {
-        this.purchase_id = purchase_id;
-    }
-
-    public String getProduct_id() {
-        return product_id;
+    public void setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

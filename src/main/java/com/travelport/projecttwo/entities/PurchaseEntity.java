@@ -11,6 +11,13 @@ public class PurchaseEntity {
     private String id;
     private String supplier;
 
+    public PurchaseEntity(String id, String supplier) {
+        this.id = id;
+        this.supplier = supplier;
+    }
+
+    public PurchaseEntity() {}
+
     public String getId() {
         return id;
     }

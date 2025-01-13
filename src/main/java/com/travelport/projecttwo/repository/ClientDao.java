@@ -10,7 +10,7 @@ public interface ClientDao {
 
     Optional<ClientEntity> getClientById(String id);
 
-    ClientEntity createClient(ClientEntity client);
+    void createClient(ClientEntity client);
 
     Optional<ClientEntity> updateClient(String id, ClientEntity client);
 

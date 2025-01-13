@@ -5,7 +5,10 @@ import com.travelport.projecttwo.services.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io. swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +34,7 @@ public class ClientController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public List<ClientEntity> getClients() {
         return clientService.getClients();
     }
@@ -52,18 +56,19 @@ public class ClientController {
     }
 
     @Operation(
-            operationId = "createClient",
             summary = "Create a new client",
-            description = "Create a new client and return the created entity.",
-            tags = {"clients"},
-            requestBody = @RequestBody(description = "Client entity to be created"),
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "Client created successfully")
-            }
+            description = "Create a new client entry",
+            tags = {"clients"}
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Client created successfully")
+    })
     @PostMapping
-    public ClientEntity createClient(@RequestBody ClientEntity client) {
-        return clientService.createClient(client);
+    public ResponseEntity<ClientEntity> createClient(@RequestBody ClientEntity client) {
+        ClientEntity createdClient = clientService.createClient(client);
+        return ResponseEntity
+                .status(HttpStatus.CREATED) // Return 201 Created
+                .body(createdClient);
     }
 
     @Operation(

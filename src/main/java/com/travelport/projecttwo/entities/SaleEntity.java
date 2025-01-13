@@ -15,8 +15,12 @@ public class SaleEntity {
     @Column(name = "client_id")
     private String clientId;
 
-    @Column(name = "product_id")
-    private String productId;
+    public SaleEntity(String id, String clientId) {
+        this.id = id;
+        this.clientId = clientId;
+    }
+
+    public SaleEntity() {}
 
     public void setId(String id) {
         this.id = id;
@@ -32,13 +36,5 @@ public class SaleEntity {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
     }
 }

@@ -29,7 +29,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientEntity createClient(ClientEntity client) {
-        return clientDao.createClient(client);
+        clientDao.createClient(client);
+        return client;
     }
 
     @Override

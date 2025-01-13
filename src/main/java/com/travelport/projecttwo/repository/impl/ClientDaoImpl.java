@@ -22,6 +22,7 @@ public class ClientDaoImpl implements ClientDao {
     public List<ClientEntity> getClients() {
         String query = "SELECT id, name, nif, address FROM clients";
         return jdbcTemplate.query(query, (rs, row) -> {
+            System.out.println("Client name " + rs.getString("name"));
             return new ClientEntity(
                 rs.getString("id"),
                 rs.getString("name"),
@@ -50,10 +51,9 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public ClientEntity createClient(ClientEntity client) {
+    public void createClient(ClientEntity client) {
         String insert = "INSERT INTO clients (id, name, nif, address) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(insert, client.getId(), client.getName(), client.getNif(), client.getAddress());
-        return client;
     }
 
     @Override

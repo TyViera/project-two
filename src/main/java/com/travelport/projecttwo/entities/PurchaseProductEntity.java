@@ -2,8 +2,10 @@ package com.travelport.projecttwo.entities;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="purchases_products")
 public class PurchaseProductEntity {
 
     @EmbeddedId

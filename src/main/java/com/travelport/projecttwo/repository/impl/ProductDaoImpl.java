@@ -51,8 +51,8 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void createProduct(ProductEntity product) {
-        String insert = "INSERT INTO products (id, name, code) VALUES (?, ?, ?)";
-        jdbcTemplate.update(insert, product.getId(), product.getName(), product.getCode());
+        String insert = "INSERT INTO products (id, name, code, stock) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(insert, product.getId(), product.getName(), product.getCode(), product.getStock());
     }
 
     @Override

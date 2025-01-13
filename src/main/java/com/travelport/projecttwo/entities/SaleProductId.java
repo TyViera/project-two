@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-class SaleProductId {
+public class SaleProductId {
 
     @Column(name = "sale_id")
     private String saleId;

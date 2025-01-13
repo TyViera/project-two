@@ -5,6 +5,7 @@ import com.travelport.projecttwo.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,8 +59,11 @@ public class ProductController {
             @ApiResponse(responseCode = "201", description = "Product created successfully")
     })
     @PostMapping
-    public ProductEntity createProduct(@RequestBody ProductEntity product) {
-        return productService.createProduct(product);
+    public ResponseEntity<ProductEntity> createProduct(@RequestBody ProductEntity product) {
+        ProductEntity createdProduct = productService.createProduct(product);
+        return ResponseEntity
+                .status(HttpStatus.CREATED) // Return 201 Created
+                .body(createdProduct);
     }
 
     @Operation(

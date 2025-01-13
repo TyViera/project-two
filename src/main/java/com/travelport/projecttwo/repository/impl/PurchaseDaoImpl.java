@@ -17,7 +17,6 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
     @Override
     public void addPurchase(PurchaseEntity purchase) {
-        // Add purchase to the database
         String insertPurchase = "INSERT INTO purchases (id, supplier) VALUES (?, ?)";
         jdbcTemplate.update(insertPurchase, purchase.getId(), purchase.getSupplier());
     }
@@ -26,8 +25,13 @@ public class PurchaseDaoImpl implements PurchaseDao {
     public void addPurchaseProduct(PurchaseProductEntity purchaseProduct) {
         String insertPurchaseProduct = "INSERT INTO purchases_products (purchase_id, product_id, quantity) VALUES (?, ?, ?)";
         jdbcTemplate.update(insertPurchaseProduct,
-                purchaseProduct.getPurchaseProductId().getPurchase_id(),
-                purchaseProduct.getPurchaseProductId().getProduct_id(),
+                purchaseProduct.getPurchaseProductId().getPurchaseId(),
+                purchaseProduct.getPurchaseProductId().getProductId(),
+                purchaseProduct.getQuantity());
+
+        String updateProductStock = "UPDATE products SET stock = stock + ? WHERE id = ?";
+        jdbcTemplate.update(updateProductStock,
+                purchaseProduct.getPurchaseProductId().getProductId(),
                 purchaseProduct.getQuantity());
     }
 }
