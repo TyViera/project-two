@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Activities API
+  version: 1.0.0
+  description: API for managing clients, products, sales, and purchases.
+servers:
+  - url: http://localhost:8080
+    description: Local server
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        nif:
+          type: string
+        address:
+          type: string
+          nullable: true
+      required:
+        - name
+        - nif
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+      required:
+        - name
+        - code
+security:
+  - basicAuth: []
+paths:
+  /clients:
+    get:
+      summary: Get all clients
+      responses:
+        '200':
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      summary: Create a new client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          description: Client created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+  /clients/{id}:
+    get:
+      summary: Get client by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Client found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          description: Client not found
+    put:
+      summary: Update a client
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Client updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          description: Client not found
+    delete:
+      summary: Delete a client
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Client deleted
+        '404':
+          description: Client not found
+        '422':
+          description: Client has orders and cannot be deleted
+  /products:
+    get:
+      summary: Get all products
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '422':
+          description: Product code already exists
