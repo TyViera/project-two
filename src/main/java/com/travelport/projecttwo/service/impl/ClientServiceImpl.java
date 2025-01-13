@@ -5,6 +5,7 @@ import com.travelport.projecttwo.exception.DeletingClientException;
 import com.travelport.projecttwo.repository.entity.ClientEntity;
 import com.travelport.projecttwo.repository.ClientRepository;
 import com.travelport.projecttwo.service.ClientService;
+import com.travelport.projecttwo.service.SaleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class ClientServiceImpl implements ClientService {
 
   private final ClientRepository clientRepository;
+  private final SaleService salesService;
 
-  public ClientServiceImpl(ClientRepository clientRepository) {
+  public ClientServiceImpl(ClientRepository clientRepository, SaleService salesService) {
     this.clientRepository = clientRepository;
+    this.salesService = salesService;
   }
 
   @Override
@@ -54,13 +57,11 @@ public class ClientServiceImpl implements ClientService {
     var isClientExist = clientRepository.existsById(id);
     if (!isClientExist) return false;
 
-    // TODO: Refactor to check manually if client has orders, instead of relying on exception
-    try {
-      clientRepository.deleteById(id);
-      return true;
-    } catch (Exception e) {
-      throw new DeletingClientException("Client has orders, cannot be deleted");
-    }
+    if (!salesService.getSalesByClientId(id).isEmpty()) throw new DeletingClientException("Client has orders, cannot be deleted");
+
+    clientRepository.deleteById(id);
+    return true;
+
   }
 
 }

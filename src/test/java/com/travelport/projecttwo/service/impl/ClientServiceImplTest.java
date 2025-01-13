@@ -3,6 +3,7 @@ package com.travelport.projecttwo.service.impl;
 import com.travelport.projecttwo.controller.model.ClientRequest;
 import com.travelport.projecttwo.repository.ClientRepository;
 import com.travelport.projecttwo.repository.entity.ClientEntity;
+import com.travelport.projecttwo.service.SaleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +27,9 @@ class ClientServiceImplTest {
 
   @Mock
   private ClientRepository clientRepository;
+
+  @Mock
+  private SaleService saleService;
 
   @Test
   @DisplayName("Given empty database, when getAll, then return empty list")
@@ -181,6 +185,7 @@ class ClientServiceImplTest {
     var id = UUID.randomUUID().toString();
 
     Mockito.when(clientRepository.existsById(eq(id))).thenReturn(true);
+    Mockito.when(saleService.getSalesByClientId(eq(id))).thenReturn(List.of());
 
     var result = clientService.deleteById(id);
 
