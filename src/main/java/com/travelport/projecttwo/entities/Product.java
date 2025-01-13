@@ -2,8 +2,8 @@ package com.travelport.projecttwo.entities;
 
 import jakarta.persistence.*;
 import java.util.UUID;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")

@@ -3,8 +3,8 @@ package com.travelport.projecttwo.entities;
 import jakarta.persistence.*;
 import java.util.UUID;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "clients")
@@ -27,6 +27,8 @@ public class Client {
   @Column(length = 150)
   @Size(min = 5, max = 150, message = "Address must be between 5 and 150 characters")
   private String address;
+
+
 
   public Client() {
   }
