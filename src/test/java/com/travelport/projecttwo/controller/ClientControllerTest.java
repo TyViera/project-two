@@ -1,6 +1,5 @@
 package com.travelport.projecttwo.controller;
 
-import com.travelport.projecttwo.ProjectTwoApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,12 +127,14 @@ class ClientControllerTest {
 
     @Test
     void postClient_Ok() throws Exception {
-        String clientJson = "{"
-                + "\"id\": \"randomUUID\","
-                + "\"name\": \"Juan Pérez\","
-                + "\"nif\": \"34567890A\","
-                + "\"address\": \"Calle de la Paz, 30, Valencia, España\""
-                + "}";
+        String clientJson = """
+        {
+            "id": "randomUUID",
+            "name": "Juan Pérez",
+            "nif": "34567890A",
+            "address": "Calle de la Paz, 30, Valencia, España"
+        }
+        """;
 
         mockMvc.perform(post("/clients")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -147,11 +148,13 @@ class ClientControllerTest {
 
     @Test
     void postClient_Invalid() throws Exception {
-        String clientJson = "{"
-                + "\"name\": \"Juan Pérez\","
-                + "\"nif\": \"12345678Z\","
-                + "\"address\": \"Calle de la Paz, 30, Valencia, España\""
-                + "}";
+        String clientJson = """
+        {
+            "name": "Juan Pérez",
+            "nif": "12345678Z",
+            "address": "Calle de la Paz, 30, Valencia, España"
+        }
+        """;
 
         mockMvc.perform(post("/clients")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -162,12 +165,14 @@ class ClientControllerTest {
 
     @Test
     void updateClientById() throws Exception {
-        String updatedClientJson = "{"
-                + "\"id\": \"123123adsf-asdf1\","
-                + "\"name\": \"Carlos Martínez Updated\","
-                + "\"nif\": \"12345678Z\","
-                + "\"address\": \"Calle Mayor, 10, Madrid, España (Updated)\""
-                + "}";
+        String updatedClientJson = """
+        {
+            "id": "123123adsf-asdf1",
+            "name": "Carlos Martínez Updated",
+            "nif": "12345678Z",
+            "address": "Calle Mayor, 10, Madrid, España (Updated)"
+        }
+        """;
 
         mockMvc.perform(put("/clients/123123adsf-asdf1")
                         .contentType(MediaType.APPLICATION_JSON)
