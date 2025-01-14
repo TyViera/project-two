@@ -4,13 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "clients")
-public class ClientEntity {
+@Table(name = "products")
+public class ProductEntity {
 
     @Id
     @NotBlank
@@ -18,15 +20,16 @@ public class ClientEntity {
     private String id;
 
     @NotBlank
-    @Length(min = 9, max = 10)
-    private String nif;
+    @Length(min = 5, max = 10)
+    private String code;
 
     @NotBlank
-    @Length(min = 2, max = 150)
+    @Length(min = 2, max = 100)
     private String name;
 
-    @Length(min = 5, max = 150)
-    private String address;
+    @NotNull
+    @PositiveOrZero
+    private int stock;
 
     public String getId() {
         return id;
@@ -34,6 +37,14 @@ public class ClientEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -44,25 +55,17 @@ public class ClientEntity {
         this.name = name;
     }
 
-    public String getNif() {
-        return nif;
+    public int getStock() {
+        return stock;
     }
 
-    public void setNif(String nif) {
-        this.nif = nif;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ClientEntity that)) return false;
+        if (!(o instanceof ProductEntity that)) return false;
         return Objects.equals(id, that.id);
     }
 

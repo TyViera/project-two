@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IClientRepository extends JpaRepository<ClientEntity, String> {
 
+    boolean existsByNif(String nif);
 }

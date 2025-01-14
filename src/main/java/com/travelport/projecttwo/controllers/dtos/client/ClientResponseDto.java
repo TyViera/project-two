@@ -1,10 +1,22 @@
-package com.travelport.projecttwo.controllers.dtos;
+package com.travelport.projecttwo.controllers.dtos.client;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClientResponseDto {
 
+    private String id;
     private String nif;
     private String name;
     private String address;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNif() {
         return nif;
